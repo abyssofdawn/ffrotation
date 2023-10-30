@@ -1,0 +1,3 @@
+C:\Users\bdeford\Source\Repos\ffrotation\x64\Release\ffrotation.vcxproj.CopyComplete
+C:\Users\bdeford\Source\Repos\ffrotation\x64\Release\ffrotation.exe
+C:\Users\bdeford\Source\Repos\ffrotation\x64\Release\fmt.dll

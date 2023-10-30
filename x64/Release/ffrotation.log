@@ -1,0 +1,101 @@
+﻿  ffrotation.cpp
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,21): error C2065: 'Character': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,14): error C2923: 'std::vector': 'Character' is not a valid template type argument for parameter '_Ty'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,21): message : see declaration of 'Character'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,14): error C2976: 'std::vector': too few template arguments
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(438,1): message : see declaration of 'std::vector'
+C:\Users\bdeford\source\repos\ffrotation\vcpkg_installed\x64-windows\x64-windows\include\fmt\format.h(1055,42): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'fmt::v10::format_error'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdexcept(101,19): message : see declaration of 'std::runtime_error'
+C:\Users\bdeford\source\repos\ffrotation\vcpkg_installed\x64-windows\x64-windows\include\fmt\format.h(1055,15): message : see declaration of 'fmt::v10::format_error'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(138,51): error C2662: 'allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type std::vector<_Ty,_Alloc>::size(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(138,46): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(138,46): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1867,39): message : see declaration of 'std::vector<_Ty,_Alloc>::size'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(138,51): message : while trying to match the argument list '()'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(146,25): error C2065: 'Character': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(146,35): error C2146: syntax error: missing ';' before identifier 'cchara'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(146,35): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(148,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(149,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(150,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(151,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(152,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(153,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(154,54): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(155,56): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(156,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(157,55): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(158,54): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(159,25): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(159,38): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(160,25): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(160,38): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(161,25): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(161,38): error C2065: 'cchara': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,61): error C2663: 'std::vector<_Ty,_Alloc>::end': no overloaded function has valid conversion for 'this' pointer
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1809,44): message : could be 'std::_Vector_const_iterator<std::_Vector_val<conditional<std::_Is_simple_alloc_v<allocator_traits<_Alloc>::rebind_alloc<_Ty>>,std::_Simple_types<_Value_type>,std::_Vec_iter_types<_Ty,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::difference_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::pointer,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::const_pointer,_Ty&,const _Ty&>>::type>> std::vector<_Ty,_Alloc>::end(void) noexcept const'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,61): message : 'std::_Vector_const_iterator<std::_Vector_val<conditional<std::_Is_simple_alloc_v<allocator_traits<_Alloc>::rebind_alloc<_Ty>>,std::_Simple_types<_Value_type>,std::_Vec_iter_types<_Ty,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::difference_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::pointer,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::const_pointer,_Ty&,const _Ty&>>::type>> std::vector<_Ty,_Alloc>::end(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,56): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,56): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1804,38): message : or       'std::_Vector_iterator<std::_Vector_val<conditional<std::_Is_simple_alloc_v<allocator_traits<_Alloc>::rebind_alloc<_Ty>>,std::_Simple_types<_Value_type>,std::_Vec_iter_types<_Ty,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::difference_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::pointer,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::const_pointer,_Ty&,const _Ty&>>::type>> std::vector<_Ty,_Alloc>::end(void) noexcept'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,61): message : 'std::_Vector_iterator<std::_Vector_val<conditional<std::_Is_simple_alloc_v<allocator_traits<_Alloc>::rebind_alloc<_Ty>>,std::_Simple_types<_Value_type>,std::_Vec_iter_types<_Ty,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::difference_type,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::pointer,allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::const_pointer,_Ty&,const _Ty&>>::type>> std::vector<_Ty,_Alloc>::end(void) noexcept': cannot convert 'this' pointer from 'std::vector' to 'std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,56): message : Reason: cannot convert from 'std::vector' to 'std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,56): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,61): message : while trying to match the argument list '()'
+C:\Users\bdeford\Source\Repos\ffrotation\src\ffrotation.cpp(166,69): error C2065: 'cchara': undeclared identifier
+  character.cpp
+  helper.cpp
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(7,14): error C2065: 'Character': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(7,7): error C2923: 'std::vector': 'Character' is not a valid template type argument for parameter '_Ty'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(7,14): message : see declaration of 'Character'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(7,7): error C2976: 'std::vector': too few template arguments
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(438,1): message : see declaration of 'std::vector'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(7,33): error C2514: 'std::vector': class template cannot be constructed
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(438,1): message : see declaration of 'std::vector'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.cpp(11,80): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  skillspeed.cpp
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,21): error C2065: 'Character': undeclared identifier
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,14): error C2923: 'std::vector': 'Character' is not a valid template type argument for parameter '_Ty'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,21): message : see declaration of 'Character'
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(14,14): error C2976: 'std::vector': too few template arguments
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(438,1): message : see declaration of 'std::vector'
+C:\Users\bdeford\source\repos\ffrotation\vcpkg_installed\x64-windows\x64-windows\include\fmt\format.h(1055,42): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'fmt::v10::format_error'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdexcept(101,19): message : see declaration of 'std::runtime_error'
+C:\Users\bdeford\source\repos\ffrotation\vcpkg_installed\x64-windows\x64-windows\include\fmt\format.h(1055,15): message : see declaration of 'fmt::v10::format_error'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,109): error C2662: 'allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type std::vector<_Ty,_Alloc>::size(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,104): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,104): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1867,39): message : see declaration of 'std::vector<_Ty,_Alloc>::size'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,109): message : while trying to match the argument list '()'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,136): warning C4305: 'argument': truncation from 'int' to 'float'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(11,127): warning C4305: 'argument': truncation from 'int' to 'float'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(17,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(17,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(17,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(17,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(24,18): error C2662: 'allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type std::vector<_Ty,_Alloc>::size(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(24,13): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(24,13): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1867,39): message : see declaration of 'std::vector<_Ty,_Alloc>::size'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(24,18): message : while trying to match the argument list '()'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(35,32): error C2662: 'allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type std::vector<_Ty,_Alloc>::size(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(35,27): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(35,27): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1867,39): message : see declaration of 'std::vector<_Ty,_Alloc>::size'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(35,32): message : while trying to match the argument list '()'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(48,50): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::vector' (or there is no acceptable conversion)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1892,40): message : could be 'const _Ty &std::vector<_Ty,_Alloc>::operator [](const allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type) noexcept const'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1882,34): message : or       '_Ty &std::vector<_Ty,_Alloc>::operator [](const allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type) noexcept'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(48,50): message : while trying to match the argument list '(std::vector, int)'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(53,51): error C2678: binary '[': no operator found which takes a left-hand operand of type 'std::vector' (or there is no acceptable conversion)
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1892,40): message : could be 'const _Ty &std::vector<_Ty,_Alloc>::operator [](const allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type) noexcept const'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1882,34): message : or       '_Ty &std::vector<_Ty,_Alloc>::operator [](const allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type) noexcept'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(53,51): message : while trying to match the argument list '(std::vector, int)'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(53,41): error C2660: 'FFRot::newCd': function does not take 1 arguments
+C:\Users\bdeford\Source\Repos\ffrotation\src\util\helper.h(8,15): message : see declaration of 'FFRot::newCd'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(53,41): message : while trying to match the argument list '(float)'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(60,23): error C2662: 'allocator_traits<allocator_traits<_Alloc>::rebind_alloc<_Ty>>::size_type std::vector<_Ty,_Alloc>::size(void) noexcept const': cannot convert 'this' pointer from 'std::vector' to 'const std::vector<_Ty,_Alloc> &'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(60,18): message : Reason: cannot convert from 'std::vector' to 'const std::vector<_Ty,_Alloc>'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(60,18): message : Conversion requires a second user-defined-conversion operator or constructor
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\vector(1867,39): message : see declaration of 'std::vector<_Ty,_Alloc>::size'
+C:\Users\bdeford\Source\Repos\ffrotation\src\view\skillspeed.cpp(60,23): message : while trying to match the argument list '()'

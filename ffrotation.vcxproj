@@ -132,7 +132,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ffrotation.cpp" />
+    <ClCompile Include="src\ffrotation.cpp" />
+    <ClCompile Include="src\util\character.cpp" />
+    <ClCompile Include="src\util\helper.cpp" />
+    <ClCompile Include="src\view\skillspeed.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\util\character.h" />
+    <ClInclude Include="src\util\helper.h" />
+    <ClInclude Include="src\view\views.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
