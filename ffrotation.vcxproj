@@ -136,6 +136,7 @@
     <ClCompile Include="src\util\character.cpp" />
     <ClCompile Include="src\util\helper.cpp" />
     <ClCompile Include="src\view\skillspeed.cpp" />
+    <ClCompile Include="src\view\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\character.h" />

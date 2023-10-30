@@ -94,6 +94,20 @@ int main(int, char**)
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    FFRot::t_stats.push_back({10, 100000});
+    std::vector<int> init = { };
+    FFRot::ticks.push_back(init);
+    int it = 38;
+    for (int i = 0; i < it; i ++) {
+        FFRot::ticks[0].push_back(i * (FFRot::t_stats[0].dur / it));
+    }
+
+    it = 103;
+    for (int i = 0; i < it; i++) {
+        FFRot::ticks[0].push_back(i * (FFRot::t_stats[0].dur / it));
+    }
+
+    std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
     bool done = false;
     while (!done)
@@ -131,7 +145,7 @@ int main(int, char**)
 
         {
             FFRot::ShowSKSWindow();
-
+            FFRot::ShowTimelineWindow();
 
             if (ImGui::BeginMainMenuBar()) {
                 if (ImGui::BeginMenu("File")) {

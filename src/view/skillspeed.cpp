@@ -9,28 +9,25 @@ namespace FFRot {
         float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
         static float cd = 2.5f;
         ImGui::SetNextWindowSizeConstraints(ImVec2(22 * TEXT_BASE_WIDTH, (TEXT_BASE_HEIGHT + 1) * (5 + chara.size())), ImVec2(INT_MAX, INT_MAX));
-        //ImGui::SetNextWindowSize(ImVec2(TEXT_BASE_WIDTH * 25, TEXT_BASE_HEIGHT * 20));
         ImGui::Begin("Skill Speed");
         ImGui::PushItemWidth(TEXT_BASE_WIDTH * 6);
         ImGui::InputFloat("cd", &cd, 0, 0, "%.2f");
         ImGui::PopItemWidth();
-        cd = clampInt(cd, 0.0f, 180.0f);
-
-        //ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+        cd = clampFloat(cd, 0.0f, 180.0f);
 
 
+        // character table
         ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 12);
         static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_SizingFixedFit;
         if (chara.size() > 0 && ImGui::BeginTable("character_table", 3, flags))
         {
-            ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
+            ImGui::TableSetupScrollFreeze(0, 1); 
             ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 2);
             ImGui::TableSetupColumn("Skill speed", ImGuiTableColumnFlags_WidthFixed);
             ImGui::TableSetupColumn("New CD", ImGuiTableColumnFlags_WidthFixed);
-            //ImGui::TableSetupColumn("Three", ImGuiTableColumnFlags_None);
             ImGui::TableHeadersRow();
 
-            // Demonstrate using clipper for large vertical lists
+
             ImGuiListClipper clipper;
             clipper.Begin(chara.size());
 
