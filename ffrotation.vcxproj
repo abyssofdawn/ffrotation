@@ -139,7 +139,6 @@
     <ClCompile Include="src\view\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\util\character.h" />
     <ClInclude Include="src\util\helper.h" />
     <ClInclude Include="src\view\views.h" />
   </ItemGroup>

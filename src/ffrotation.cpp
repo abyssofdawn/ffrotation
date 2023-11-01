@@ -1,11 +1,11 @@
+#include "util/helper.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include <d3d11.h>
 #include <tchar.h>
-#include "util/helper.h"
+
 #include <algorithm>
-#include "util/character.h"
 #include <vector>
 #include <string>
 #include "fmt/format.h"
@@ -96,7 +96,7 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     FFRot::t_stats.push_back({10, 100000});
     std::vector<int> init = { };
-    FFRot::ticks.push_back(init);
+    /*ticks.push_back(init);
     int it = 38;
     for (int i = 0; i < it; i ++) {
         FFRot::ticks[0].push_back(i * (FFRot::t_stats[0].dur / it));
@@ -105,11 +105,12 @@ int main(int, char**)
     it = 103;
     for (int i = 0; i < it; i++) {
         FFRot::ticks[0].push_back(i * (FFRot::t_stats[0].dur / it));
-    }
+    }*/
 
-    std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
+    //std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
     bool done = false;
+    FFRot::Character cchara;
     while (!done)
     {
         const float TEXT_BASE_WIDTH = 4.0f * ImGui::GetFontSize() / 6.0f;
@@ -152,12 +153,13 @@ int main(int, char**)
                     bool disableNew = FFRot::chara.size() == 8;
                     if (disableNew)
                         ImGui::BeginDisabled();
-                    if (ImGui::Button("New...", ImVec2(0, 0)))
+                    if (ImGui::Button("New...", ImVec2(0, 0))) {
                         ImGui::OpenPopup("New Char");
+                        cchara = FFRot::Character();
+                    }
                     if (disableNew)
                         ImGui::EndDisabled();
                     if (ImGui::BeginPopupModal("New Char", NULL)) {
-                        FFRot::Character cchara;
 
                         ImGui::InputInt("str##char", &cchara.str, 0, 0);
                         ImGui::InputInt("wis##char", &cchara.wis, 0, 0);
@@ -173,7 +175,7 @@ int main(int, char**)
                         cchara.str = IM_CLAMP(cchara.str, 0, 10000);
                         cchara.sks = IM_CLAMP(cchara.sks, 400, 2700);
                         cchara.wis = IM_CLAMP(cchara.wis, 0, 10000);
-
+                        cchara.ticksById.push_back({});
 
                         ImGui::Text("Make a character!");
                         if (ImGui::Button("Create", ImVec2(120, 0))) {

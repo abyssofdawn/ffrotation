@@ -1,13 +1,13 @@
 #include <math.h>
 #include "imgui.h"
 #include <vector>
-#include "character.h"
 #include "helper.h"
 
 namespace FFRot {
 	std::vector<Character> chara = {};
 	std::vector<TimelineStats> t_stats = {};
 	std::vector<std::vector<int>> ticks = {};
+
 
 
 	float newCd(float cd, int sks) {
@@ -25,4 +25,6 @@ namespace FFRot {
 	{
 		ImGui::PopStyleVar(2);
 	}
+
+
 }

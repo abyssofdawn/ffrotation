@@ -10,10 +10,12 @@ namespace FFRot {
         static float cd = 2.5f;
         ImGui::SetNextWindowSizeConstraints(ImVec2(22 * TEXT_BASE_WIDTH, (TEXT_BASE_HEIGHT + 1) * (5 + chara.size())), ImVec2(INT_MAX, INT_MAX));
         ImGui::Begin("Skill Speed");
+        float oldCd = cd;
         ImGui::PushItemWidth(TEXT_BASE_WIDTH * 6);
         ImGui::InputFloat("cd", &cd, 0, 0, "%.2f");
         ImGui::PopItemWidth();
         cd = clampFloat(cd, 0.0f, 180.0f);
+
 
 
         // character table
@@ -27,7 +29,8 @@ namespace FFRot {
             ImGui::TableSetupColumn("New CD", ImGuiTableColumnFlags_WidthFixed);
             ImGui::TableHeadersRow();
 
-
+            int oldSks = 0;
+            float oldCd = 0.0f;
             ImGuiListClipper clipper;
             clipper.Begin(chara.size());
 
@@ -35,6 +38,7 @@ namespace FFRot {
             {
                 for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; row++)
                 {
+                    oldSks = chara[row].sks;
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
                     ImGui::Text("%d", row);
@@ -43,13 +47,16 @@ namespace FFRot {
                     PushStyleCompact();
                     std::string id = fmt::format("###chara table{}", row);
                     ImGui::InputInt(id.c_str(), &chara[row].sks, 0, 0);
+                    chara[row].sks = clampInt(chara[row].sks, 400, 2700);
                     PopStyleCompact();
                     ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
                     ImGui::PushItemWidth(TEXT_BASE_WIDTH * 6);
                     ImGui::Text("%.2f", newCd(cd, chara[row].sks));
                     ImGui::PopItemWidth();
-
+                    if (oldSks != chara[row].sks || oldCd != cd) {
+                        chara[row].updateTicks(cd);
+                    }
                 }
             }
             ImGui::EndTable();

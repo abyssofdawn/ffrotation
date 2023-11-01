@@ -26,16 +26,20 @@ namespace FFRot {
 					draw_list->AddRectFilled(ImVec2(p0.x + 5 + posx, p0.y), ImVec2(p0.x + 5 + posx + 1, p0.y + 50), ImColor(255, 255, 255));
 				else break;
 			}
+
+			// draws blue lines for tick marks stored, will be changed later to support dynamic cds
+			if (chara[0].ticksById.size() > 0) {
+				for (auto it = chara[0].ticksById[0].begin(); it != chara[0].ticksById[0].end(); ++it) {
+
+					posx = int((*it) / step_size);
+					if (!(posx > width))
+						draw_list->AddRectFilled(ImVec2(p0.x + 5 + posx, p0.y), ImVec2(p0.x + 5 + posx + 1, p0.y + 50), ImColor(50, 100, 200));
+					else break;
+				}
+			}
 		}
 
-		// draws blue lines for tick marks stored, will be changed later to support dynamic cds
-
-		for (auto it = FFRot::ticks[0].begin(); it != FFRot::ticks[0].end(); ++it) {
-			posx = int((*it) / step_size);
-			if (!(posx > width))
-				draw_list->AddRectFilled(ImVec2(p0.x + 5 + posx, p0.y), ImVec2(p0.x + 5 + posx + 1, p0.y + 50), ImColor(50, 100, 200));
-			else break;
-		}
+		
 
 
 
