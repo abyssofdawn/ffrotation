@@ -109,6 +109,12 @@ int main(int, char**)
 
     //std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
+
+    FFRot::skillList.push_back({ false, 30000, 100 });
+    FFRot::skillList.push_back({ true, 2500, 100 });
+
+
+
     bool done = false;
     FFRot::Character cchara;
     while (!done)
@@ -175,11 +181,12 @@ int main(int, char**)
                         cchara.str = IM_CLAMP(cchara.str, 0, 10000);
                         cchara.sks = IM_CLAMP(cchara.sks, 400, 2700);
                         cchara.wis = IM_CLAMP(cchara.wis, 0, 10000);
-                        cchara.ticksById.push_back({});
+                        cchara.skills.push_back({});
 
                         ImGui::Text("Make a character!");
                         if (ImGui::Button("Create", ImVec2(120, 0))) {
                             FFRot::chara.insert(FFRot::chara.end(), cchara);
+                            FFRot::chara[0].updateTicks(0);
                             ImGui::CloseCurrentPopup();
                         }
                         if (ImGui::Button("Cancel", ImVec2(120, 0))) {

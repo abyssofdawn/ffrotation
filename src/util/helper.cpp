@@ -7,11 +7,18 @@ namespace FFRot {
 	std::vector<Character> chara = {};
 	std::vector<TimelineStats> t_stats = {};
 	std::vector<std::vector<int>> ticks = {};
-
-
+	std::vector<Skill> skillList = {};
 
 	float newCd(float cd, int sks) {
 		return floor(cd * 1000 * (1000 + ceil(130.0f * (400 - sks) / 1900)) / 10000) / 100;
+	}
+
+	int newCdms(float cd, int sks) {
+		return floor(cd * 1000 * (1000 + ceil(130.0f * (400 - sks) / 1900)) / 10000) * 10;
+	}
+
+	int newCdms(int cd, int sks) {
+		return floor(cd * (1000 + ceil(130.0f * (400 - sks) / 1900)) / 10000) * 10;
 	}
 
 	void PushStyleCompact()
@@ -25,6 +32,8 @@ namespace FFRot {
 	{
 		ImGui::PopStyleVar(2);
 	}
+
+
 
 
 }

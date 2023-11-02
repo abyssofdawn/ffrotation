@@ -28,10 +28,10 @@ namespace FFRot {
 			}
 
 			// draws blue lines for tick marks stored, will be changed later to support dynamic cds
-			if (chara[0].ticksById.size() > 0) {
-				for (auto it = chara[0].ticksById[0].begin(); it != chara[0].ticksById[0].end(); ++it) {
+			if (chara[0].skills[0].ticks.size() > 0) {
+				for (auto it = chara[0].skills[0].ticks.begin(); it != chara[0].skills[0].ticks.end(); ++it) {
 
-					posx = int((*it) / step_size);
+					posx = int(it->ms / step_size);
 					if (!(posx > width))
 						draw_list->AddRectFilled(ImVec2(p0.x + 5 + posx, p0.y), ImVec2(p0.x + 5 + posx + 1, p0.y + 50), ImColor(50, 100, 200));
 					else break;
@@ -45,6 +45,19 @@ namespace FFRot {
 
 
 		ImGui::PopStyleVar();
+
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 60);
+		
+		if (chara.size() > 0) {
+			if (ImGui::BeginListBox("ticks")) {
+				if (chara[0].skills[0].ticks.size() > 0) {
+					for (int n = 0; n < chara[0].skills[0].ticks.size(); n++) {
+						ImGui::Text("ms=%d delay=%d", chara[0].skills[0].ticks[n].ms, chara[0].skills[0].ticks[n].delay);
+					}
+				}
+				ImGui::EndListBox();
+			}
+		}
 
  		ImGui::End();
 	}

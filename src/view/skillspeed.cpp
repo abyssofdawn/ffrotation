@@ -14,23 +14,24 @@ namespace FFRot {
         ImGui::PushItemWidth(TEXT_BASE_WIDTH * 6);
         ImGui::InputFloat("cd", &cd, 0, 0, "%.2f");
         ImGui::PopItemWidth();
-        cd = clampFloat(cd, 0.0f, 180.0f);
+        cd = clampFloat(cd, 0.01f, 180.0f);
 
 
 
         // character table
         ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 12);
         static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_SizingFixedFit;
-        if (chara.size() > 0 && ImGui::BeginTable("character_table", 3, flags))
+        if (chara.size() > 0 && ImGui::BeginTable("character_table", 4, flags))
         {
             ImGui::TableSetupScrollFreeze(0, 1); 
             ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 2);
             ImGui::TableSetupColumn("Skill speed", ImGuiTableColumnFlags_WidthFixed);
             ImGui::TableSetupColumn("New CD", ImGuiTableColumnFlags_WidthFixed);
+            ImGui::TableSetupColumn("SKS?", ImGuiTableColumnFlags_WidthFixed);
             ImGui::TableHeadersRow();
-
+            
             int oldSks = 0;
-            float oldCd = 0.0f;
+            bool oldSksAffected = false;
             ImGuiListClipper clipper;
             clipper.Begin(chara.size());
 
@@ -39,6 +40,7 @@ namespace FFRot {
                 for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; row++)
                 {
                     oldSks = chara[row].sks;
+                    oldSksAffected = skillList[0].gcd;
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
                     ImGui::Text("%d", row);
@@ -52,9 +54,14 @@ namespace FFRot {
                     ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
                     ImGui::PushItemWidth(TEXT_BASE_WIDTH * 6);
-                    ImGui::Text("%.2f", newCd(cd, chara[row].sks));
+                    
+                    ImGui::Text("%.2f", chara[row].skills[0].skill->gcd ? newCd(cd, chara[row].sks) : cd);
                     ImGui::PopItemWidth();
-                    if (oldSks != chara[row].sks || oldCd != cd) {
+                    ImGui::TableNextColumn();
+                    id = fmt::format("###chara table gcd{}", row);
+                    ImGui::Checkbox(id.c_str(), &skillList[0].gcd);
+                    if (oldSks != chara[row].sks || oldCd != cd || oldSksAffected!=skillList[0].gcd) {
+                        skillList[0].cd = int(cd * 1000);
                         chara[row].updateTicks(cd);
                     }
                 }
