@@ -19,9 +19,9 @@ namespace FFRot {
 	};
 
 	struct Skill {
-		bool gcd;
-		int cd;
-		int lock;
+		bool gcd = true;
+		int cd = 2500;
+		int lock = 100;
 	};
 
 	extern std::vector<Skill> skillList;
@@ -35,11 +35,10 @@ namespace FFRot {
 		int ping;
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
-		bool isSksAffected;
 		std::vector<CharSkill> skills = {};
 		//int id;
 		enum Job cjob;
-		void updateTicks(float cd);
+		void updateTicks(int index);
 		Character();
 		int getLatestGCD(int ms);
 		int getNextGCD(int ms);

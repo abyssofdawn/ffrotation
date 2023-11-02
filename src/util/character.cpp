@@ -1,32 +1,29 @@
 #include "helper.h"
 
 namespace FFRot {
-	void Character::updateTicks(float cd) {
-		int cdms = skills[0].skill->gcd ?  skills[0].skill->cd : newCdms(skills[0].skill->cd, sks);
-		//int acd = (skills[0].skill->gcd ? newCdms(skills[0].skill->cd, sks) : skills[0].skill->cd);
-		gcd = newCdms(2500, sks);
-		skills[0].ticks.clear();
+	void Character::updateTicks(int index) {
+		//"cd milliseconds", how long the cd of a skill is based on if its gcd
+		int cdms = skills[index].skill->gcd ?  skills[index].skill->cd : newCdms(skills[index].skill->cd, sks); 
+		gcd = newCdms(2500, sks); //find out characters gcd, not to be confused with skill gcd which is a bool
+		skills[index].ticks.clear();
 		int i = 0;
-		int count = 0;
+		int count = index;
 		do {
-			int lgcd = getLatestGCD(i + cdms);
+			int lgcd = getLatestGCD(i + cdms); //find the two gcd's times that the guessed time is between
 			int ngcd = getNextGCD(i + cdms);
-			if (i + cdms - lgcd < skills[0].skill->lock + 500)
-				i = lgcd + skills[0].skill->lock + 500 + ping;
-			else if (ngcd-(i+cdms) < skills[0].skill->lock +500)
-				i = ngcd + skills[0].skill->lock + 500 + ping;
-			else i += cdms;
+			if (i + cdms - lgcd < skills[index].skill->lock + 500) //delay the skill if it will clip a gcd/get clipped by a gcd
+				i = lgcd + skills[index].skill->lock + 500 + ping; 
+			else if (ngcd-(i+cdms) < skills[index].skill->lock +500)
+				i = ngcd + skills[index].skill->lock + 500 + ping;
+			else i += cdms; 
 
-			int dms = 0;
+			int dms = 0; //find the delta ms between consectutive uses of the skill
 			if (count>0)
-				dms = (i-skills[0].ticks[count-1].ms) - cdms;
+				dms = (i-skills[index].ticks[count-1].ms) - cdms;
 
-
-
-
-			skills[0].ticks.push_back({i, dms});
+			skills[index].ticks.push_back({i, dms});
 			count++;
-		} while (i <= FFRot::t_stats[0].dur);
+		} while (i <= FFRot::t_stats[index].dur);
 	}
 
 	int Character::getLatestGCD(int ms) {
@@ -46,8 +43,12 @@ namespace FFRot {
 	}
 
 	Character::Character() {
+		skills.clear();
 		skills.push_back({ &skillList[0], {}});
-		isSksAffected = true; //this is temporary until skills are properly added
+		skills.push_back({ &skillList[1], {} });
+		for (int n = 0; n < skills.size() - 2; n++) {
+			skills.pop_back();
+		}
 		str = 0;
 		crit = 0;
 		det = 0;
