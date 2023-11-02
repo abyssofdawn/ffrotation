@@ -19,28 +19,29 @@ namespace FFRot {
 	};
 
 	struct Skill {
-		bool gcd;
-		int cd;
-		int lock;
+		bool gcd = true;
+		int cd = 2500;
+		int lock = 100;
 	};
 
 	extern std::vector<Skill> skillList;
-
+	struct CharSkill {
+		Skill* skill;
+		std::vector<Tick> ticks;
+	};
 	class Character {
-		struct CharSkill {
-			Skill* skill;
-			std::vector<Tick> ticks;
-		};
+
 	public:
+		int id;
 		int ping;
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
-		bool isSksAffected;
 		std::vector<CharSkill> skills = {};
 		//int id;
 		enum Job cjob;
-		void updateTicks(float cd);
+		void updateTicks(int index);
 		Character();
+		Character(int id);
 		int getLatestGCD(int ms);
 		int getNextGCD(int ms);
 		int getGCDNumber(int ms);

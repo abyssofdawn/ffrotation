@@ -139,6 +139,7 @@
     <ClCompile Include="src\view\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Downloads\json.hpp" />
     <ClInclude Include="src\util\helper.h" />
     <ClInclude Include="src\view\views.h" />
   </ItemGroup>
