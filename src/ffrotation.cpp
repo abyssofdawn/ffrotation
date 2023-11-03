@@ -95,6 +95,8 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     FFRot::t_stats.push_back({10, 100000});
+    FFRot::t_stats.push_back({ 10, 100000 });
+
     std::vector<int> init = { };
     /*ticks.push_back(init);
     int it = 38;
@@ -110,8 +112,8 @@ int main(int, char**)
     //std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
 
-    FFRot::skillList.push_back({ false, 30000, 50 });
-    FFRot::skillList.push_back({ true, 2500, 100 });
+    FFRot::skillList.push_back({ false, false, 30000, 50 });
+    FFRot::skillList.push_back({ true, false, 2500, 100 });
 
 
 
@@ -180,7 +182,7 @@ int main(int, char**)
                         ImGui::InputInt("hp##char", &cchara.hp, 0, 0);
                         cchara.str = IM_CLAMP(cchara.str, 0, 10000);
                         cchara.sks = IM_CLAMP(cchara.sks, 400, 2700);
-                        cchara.wis = IM_CLAMP(cchara.wis, 0, 10000);
+                        cchara.sps = IM_CLAMP(cchara.sps, 400, 2700);
                         ImGui::Text("Make a character!");
                         if (ImGui::Button("Create", ImVec2(120, 0))) {
                             FFRot::chara.insert(FFRot::chara.end(), cchara);

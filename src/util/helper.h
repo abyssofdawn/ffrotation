@@ -4,6 +4,7 @@
 #define HELPER
 
 namespace FFRot {
+	enum struct SkillType { GCD, OGCD, CAST_GCD, CAST_OGCD};
 	enum struct Job { PLD, WAR, DRK, GNB, WHM, SCH, AST, SGE, MNK, DRG, NIN, SAM, RPR, BRD, MCH, DNC, BLM, SMN, RDM };
 	extern float newCd(float cd, int sks); 
 	extern int newCdms(float cd, int sks);
@@ -20,6 +21,7 @@ namespace FFRot {
 
 	struct Skill {
 		bool gcd = true;
+		bool cast = false;
 		int cd = 2500;
 		int lock = 100;
 	};
@@ -37,9 +39,14 @@ namespace FFRot {
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
 		std::vector<CharSkill> skills = {};
-		//int id;
+		std::vector<int> gcdTicks = {};
 		enum Job cjob;
 		void updateTicks(int index);
+		bool isOnCD(int index, int ms);
+		void fitGCDAuto(int maxSearch);
+		void addTick(int index, int ms);
+		int getGCDLength(int index);
+		int getAdjustedCD(Skill* skill);
 		Character();
 		Character(int id);
 		int getLatestGCD(int ms);
