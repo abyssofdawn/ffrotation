@@ -25,7 +25,7 @@ namespace FFRot {
 
 		if (chara.size() > 0) {
 			for (int i = 0; i < chara[0].gcdTicks.size(); i++) {
-				posx = int((chara[0].gcdTicks[i]) / step_size);
+				posx = int((chara[0].gcdTicks[i].tick.ms) / step_size);
 
 				if (!(posx > width))
 					draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y), ImVec2(p0.x + padding + posx + 1, p0.y + height), ImColor(255, 255, 255));
@@ -61,7 +61,7 @@ namespace FFRot {
 			if (ImGui::BeginListBox("ticks")) {
 				if (chara[0].skills[0].ticks.size() > 0) {
 					for (int n = 0; n < chara[0].skills[0].ticks.size(); n++) {
-						ImGui::Text("ms=%d delay=%d", chara[0].skills[0].ticks[n].ms, chara[0].skills[0].ticks[n].delay);
+						ImGui::Text("%d", chara[0].getLastUsedAtTime(0, chara[0].skills.at(0).ticks.at(n).ms));
 					}
 				}
 				ImGui::EndListBox();

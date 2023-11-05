@@ -1,47 +1,31 @@
 #include "helper.h"
+#include <math.h>
 
 namespace FFRot {
 	void Character::updateTicks(int index) {
-		int stat = (skills[index].skill->cast ? sps : sks);
-		if (skills[index].skill->cd < 0.01f) return;
-		//"cd milliseconds", how long the cd of a skill is based on if its gcd
-		int cdms = getAdjustedCD(skills.at(index).skill);
-		gcd = newCdms(2500, stat); //find out characters gcd, not to be confused with skill gcd which is a bool
-		skills.at(index).ticks.clear();
-		int i = 0;
-		int count = 0;
-		//while (i <= FFRot::t_stats.at(id).dur) {
-			int lgcd = getLatestGCD(i); //find the two gcd's times that the guessed time is between
-			int ngcd = getNextGCD(i);
-			i = ngcd;
+		
+		clearTicks();
+		fitGCDAuto(10000);
 
-			int dms = 0; //find the delta ms between consectutive uses of the skill
-			fitGCDAuto(10000);
-			//addTick(index, i);
-			//	dms = (i-skills[index].ticks[count-1].ms) - cdms;
-
-			//skills.at(index).ticks.push_back({i, dms});
-
-
-			count++;
-		//}
 	}
 
+	void Character::clearTicks() {
+		for (int i = 0; i < skills.size(); i++)
+			skills[i].ticks.clear();
+	}
 	
 
-	int Character::getLatestGCD(int ms) {
-		//int gcdms = gcd;
-		//int ret = gcdms * getGCDNumber(ms);
-		//return ret;
-		if (gcdTicks.size() > 0) {
+	GCDTick Character::getLatestGCD(int ms) {
+
+		if (gcdTicks.size() > 1) {
 			for (int i = 0; i < gcdTicks.size(); i++) {
-				if (gcdTicks.at(i) > ms)
+				if (gcdTicks.at(i).tick.ms + gcdTicks.at(i).tick.delay > ms)
 				{
 					return gcdTicks.at(i-1);
 				}
 			}
 		}
-		return 0;
+		return { nullptr, {0,0} };
 	}
 
 	int Character::getNextGCD(int ms) {
@@ -53,19 +37,42 @@ namespace FFRot {
 
 			for (int i = 0; i < gcdTicks.size(); i++)
 			{
-				if (gcdTicks.at(i) > ms)
+				if (gcdTicks.at(i).tick.ms < ms)
 				{
-					return gcdTicks.at(i);
+					return gcdTicks.at(i).tick.delay+gcdTicks.at(i).tick.ms;
 				}
 			}
 		}
 		if (gcdTicks.size() > 1)
-			return gcdTicks.at(1);
+			return gcdTicks.at(1).tick.ms;
+		return 0;
+	}
+
+	void Character::fitOGCD(int index, int ms) { //trys to fit all ogcd skills to be used on cooldown
+
+	}
+
+	int Character::getLastUsedAtTime(int index, int ms) { //gets last used time for a specific skill at a specific time
+		Tick* ret = &skills.at(index).ticks.at(0);
+		int pms = ret->ms;
+		for (int i = 0; i < skills.at(index).ticks.size(); i++) {
+			if (ms > pms)
+			{
+				ret = &skills.at(index).ticks.at(i);
+			} 
+			pms = skills.at(index).ticks.at(i).ms;
+		}
+		return ret->ms;
+	}
+
+	int Character::getLastUsed(int index) {
+		if(skills.at(index).ticks.size()>0)
+			return skills.at(index).ticks.at(skills.at(index).ticks.size() - 1).ms;
 		return 0;
 	}
 
 	int Character::getGCDNumber(int ms) {
-		return ms / (getLatestGCD(ms)+1);
+		return 0;
 	}
 
 	int Character::getAdjustedCD(Skill* skill) { //returns new cd based on what kind of skill it is and that type's stat
@@ -77,16 +84,22 @@ namespace FFRot {
 	bool Character::isOnCD(int index, int ms) { //returns whether or not the skill is on cooldown (in its own tick list)
 		bool ret;
 		CharSkill skill = skills.at(index);
-		if (skill.ticks.size() > 0) {
-			int last = skill.ticks.at(skill.ticks.size() - 1).ms;
-			if (last + getAdjustedCD(skill.skill) > ms) {
-				return false;
-			}
+		int last = getLastUsed(index);
+		int delta = ms - last;
+		if (delta < getAdjustedCD(skill.skill) && skills.at(index).ticks.size()>0) {
+			return true;
 		}
-		else if (skill.ticks.size() == 0) {
-			return false;
-		}
-		return true;
+		return false;
+	}
+
+	int Character::getLastTickDelta(int index, int ms) {
+		if (skills.at(index).ticks.empty()) return 0;
+
+		int last = skills.at(index).ticks.at(skills.at(index).ticks.size() - 1).ms;
+
+		int ret = ms - last;
+		return ret;
+
 	}
 
 	void Character::addTick(int index, int ms) {
@@ -94,7 +107,7 @@ namespace FFRot {
 		if (skill->ticks.size() == 0)
 			skill->ticks.push_back({ ms, 0 });
 		else
-			skill->ticks.push_back({ms,		(ms - skill->ticks.at(skill->ticks.size() - 1).ms) - getAdjustedCD(skill->skill)});
+			skill->ticks.push_back({ms,		(ms - skill->ticks.at(skill->ticks.size() - 1).ms)-getAdjustedCD(skill->skill)});
 	}
 
 	int Character::getGCDLength(int index) {
@@ -107,22 +120,32 @@ namespace FFRot {
 	void Character::fitGCDAuto(int maxSearch = 10000) //trys to automatically build a gcd timeline. skill slotting priority is by small to large index in skills[]
 	{
 		gcdTicks.clear();
-		gcdTicks.push_back(0);
 		int dur = 0;
 		int tempcd = 0;
+		int stat = sks; 
+		Skill* skill = nullptr;
 		while (dur < FFRot::t_stats.at(id).dur) {  //step through the whole duration of the timeline for this character
-			for (int i = 0; i < skills.size(); i++) {
-				if (!isOnCD(i, dur)) {
-					tempcd = getGCDLength(i); //if a skill is on cd, itll be skipped, otherwise it is the next gcd and the rest are skipped
+			for (int i = 0; i < skills.size(); i++) {//if a skill is on cd, itll be skipped, otherwise it is the next gcd and the rest are skipped
+				if (isOnCD(i, dur))
+				{
+					continue;
+				}
+				else if (!isOnCD(i, dur) && skills.at(i).skill->gcd)
+				{
+					skill = skills.at(i).skill;
+					stat = (skill->cast ? sps : sks);
 					addTick(i, dur);
 					break;
 				}
-			}
-			if (tempcd == 0) {
-				tempcd = newCdms(2500, sks);
-			}
+				else 
+				{
+					stat = sks;
+				}
 
-			gcdTicks.push_back(dur);
+			}
+			tempcd = newCdms(2500, stat);
+
+			gcdTicks.push_back({skill, { dur, tempcd } });
 			dur += tempcd;
 			tempcd = 0;
 		}
@@ -136,6 +159,9 @@ namespace FFRot {
 		id = _id;
 		skills.push_back({ &skillList[0], {}});
 		skills.push_back({ &skillList[1], {} });
+		skills.push_back({ &skillList[2], {} });
+		skills.push_back({ &skillList[3], {} });
+
 		str = 0;
 		crit = 0;
 		det = 0;

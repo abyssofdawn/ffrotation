@@ -31,6 +31,11 @@ namespace FFRot {
 		Skill* skill;
 		std::vector<Tick> ticks;
 	};
+	struct GCDTick {
+		Skill* skill;
+		Tick tick;
+
+	};
 	class Character {
 
 	public:
@@ -39,7 +44,9 @@ namespace FFRot {
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
 		std::vector<CharSkill> skills = {};
-		std::vector<int> gcdTicks = {};
+		std::vector<GCDTick> gcdTicks = {};
+		void clearTicks();
+		void fitOGCD(int index, int ms);
 		enum Job cjob;
 		void updateTicks(int index);
 		bool isOnCD(int index, int ms);
@@ -47,11 +54,14 @@ namespace FFRot {
 		void addTick(int index, int ms);
 		int getGCDLength(int index);
 		int getAdjustedCD(Skill* skill);
+		int getLastTickDelta(int index, int ms);
 		Character();
 		Character(int id);
-		int getLatestGCD(int ms);
+		GCDTick getLatestGCD(int ms);
 		int getNextGCD(int ms);
 		int getGCDNumber(int ms);
+		int getLastUsedAtTime(int index, int ms);
+		int getLastUsed(int index);
 	};
 	extern std::vector<Character> chara;
 	struct TimelineStats { 

@@ -87,10 +87,12 @@ namespace FFRot {
                             ImGui::Checkbox(id.c_str(), &(skill.skill->cast));
                            // if (oldSks != chara[row].sks || oldCd != cd || oldSksAffected != skill.skill->gcd) {
                             //    skill.skill->cd = int(cd * 1000);
-                                chara[row].updateTicks(_skill);
                            // }
                         }
                     }
+
+                    chara[row].updateTicks(0);
+
                 }
            // }
 

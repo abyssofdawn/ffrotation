@@ -112,8 +112,11 @@ int main(int, char**)
     //std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
 
-    FFRot::skillList.push_back({ false, false, 30000, 50 });
+    FFRot::skillList.push_back({ false, false, 30000, 600 });
     FFRot::skillList.push_back({ true, false, 2500, 100 });
+    FFRot::skillList.push_back({ true, false, 20000, 100 });
+    FFRot::skillList.push_back({ true, false, 30000, 100 });
+
 
 
 
