@@ -4,6 +4,7 @@
 #define HELPER
 
 namespace FFRot {
+	enum struct SkillType { GCD, OGCD, CAST_GCD, CAST_OGCD};
 	enum struct Job { PLD, WAR, DRK, GNB, WHM, SCH, AST, SGE, MNK, DRG, NIN, SAM, RPR, BRD, MCH, DNC, BLM, SMN, RDM };
 	extern float newCd(float cd, int sks); 
 	extern int newCdms(float cd, int sks);
@@ -19,31 +20,48 @@ namespace FFRot {
 	};
 
 	struct Skill {
-		bool gcd;
-		int cd;
-		int lock;
+		bool gcd = true;
+		bool cast = false;
+		int cd = 2500;
+		int lock = 100;
 	};
 
 	extern std::vector<Skill> skillList;
+	struct CharSkill {
+		Skill* skill;
+		std::vector<Tick> ticks;
+	};
+	struct GCDTick {
+		Skill* skill;
+		Tick tick;
 
+	};
 	class Character {
-		struct CharSkill {
-			Skill* skill;
-			std::vector<Tick> ticks;
-		};
+
 	public:
+		int id;
 		int ping;
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
-		bool isSksAffected;
 		std::vector<CharSkill> skills = {};
-		//int id;
+		std::vector<GCDTick> gcdTicks = {};
+		void clearTicks();
+		void fitOGCD(int index, int ms);
 		enum Job cjob;
-		void updateTicks(float cd);
+		void updateTicks(int index);
+		bool isOnCD(int index, int ms);
+		void fitGCDAuto(int maxSearch);
+		void addTick(int index, int ms);
+		int getGCDLength(int index);
+		int getAdjustedCD(Skill* skill);
+		int getLastTickDelta(int index, int ms);
 		Character();
-		int getLatestGCD(int ms);
+		Character(int id);
+		GCDTick getLatestGCD(int ms);
 		int getNextGCD(int ms);
 		int getGCDNumber(int ms);
+		int getLastUsedAtTime(int index, int ms);
+		int getLastUsed(int index);
 	};
 	extern std::vector<Character> chara;
 	struct TimelineStats { 
