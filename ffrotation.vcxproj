@@ -133,18 +133,36 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ffrotation.cpp" />
+    <ClCompile Include="src\lib\ImGuiFileDialog.cpp" />
     <ClCompile Include="src\util\character.cpp" />
     <ClCompile Include="src\util\helper.cpp" />
     <ClCompile Include="src\view\skillspeed.cpp" />
     <ClCompile Include="src\view\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\json.hpp" />
+    <ClInclude Include="src\lib\dirent\dirent.h" />
+    <ClInclude Include="src\lib\ImGuiFileDialog.h" />
+    <ClInclude Include="src\lib\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="src\lib\stb\stb_image.h" />
+    <ClInclude Include="src\lib\stb\stb_image_resize.h" />
     <ClInclude Include="src\util\helper.h" />
+    <ClInclude Include="src\util\json.hpp" />
     <ClInclude Include="src\view\views.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="CppProperties.json" />
+    <None Include="imgui.ini" />
+    <None Include="README.md" />
+    <None Include="skills.json" />
     <None Include="src\imgui.ini" />
+    <None Include="src\lib\LICENSE" />
+    <None Include="src\lib\README.md" />
+    <None Include="vcpkg-configuration.json" />
+    <None Include="vcpkg.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\lib\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

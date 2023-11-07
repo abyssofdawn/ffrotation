@@ -33,6 +33,20 @@ namespace FFRot {
 		ImGui::PopStyleVar(2);
 	}
 
+	void to_json(json& j, const Skill& skill)
+	{
+		j = json{ {"gcd", skill.gcd}, {"cast", skill.cast}, {"cd", skill.cd}, {"lock", skill.lock} };
+	}
+
+	void from_json(const json& j, Skill& skill)
+	{
+		j.at("gcd").get_to(skill.gcd);
+		j.at("cast").get_to(skill.cast);
+		j.at("cd").get_to(skill.cd);
+		j.at("lock").get_to(skill.lock);
+
+	}
+
 
 
 

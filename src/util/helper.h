@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include "json.hpp"
+
+using json = nlohmann::json;
 #ifndef HELPER
 #define HELPER
 
@@ -68,7 +71,8 @@ namespace FFRot {
 		int zoom, dur;  
 	};
 	extern std::vector<TimelineStats> t_stats;
-
+	extern void to_json(json& j, const Skill& skill);
+	extern void from_json(const json& j, Skill& skill);
 	
 
 }

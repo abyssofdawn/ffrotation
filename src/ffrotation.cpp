@@ -4,16 +4,21 @@
 #include "imgui_impl_dx11.h"
 #include <d3d11.h>
 #include <tchar.h>
-
+#include "util/json.hpp"
 #include <algorithm>
 #include <vector>
 #include <string>
 #include "fmt/format.h"
+#include <fstream>
+#include <iostream>
 #include "view/views.h"
+#include "lib/ImGuiFileDialog.h"
 
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 #define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
+
+using json = nlohmann::json;
 
 // Data
 static ID3D11Device* g_pd3dDevice = nullptr;
@@ -112,10 +117,17 @@ int main(int, char**)
     //std::sort(FFRot::ticks[0].begin(), FFRot::ticks[0].end());
     // Main loop
 
-    FFRot::skillList.push_back({ false, false, 30000, 600 });
+    /*FFRot::skillList.push_back({false, false, 30000, 600});
     FFRot::skillList.push_back({ true, false, 2500, 100 });
     FFRot::skillList.push_back({ true, false, 20000, 100 });
-    FFRot::skillList.push_back({ true, false, 30000, 100 });
+    FFRot::skillList.push_back({ true, false, 30000, 100 });*/
+
+    std::ifstream i("skills.json");
+    json j_in;
+    i >> j_in;
+    i.close();
+
+    FFRot::skillList = j_in;
 
 
 
@@ -136,8 +148,11 @@ int main(int, char**)
             if (msg.message == WM_QUIT)
                 done = true;
         }
-        if (done)
+        if (done) 
+        {
+
             break;
+        }
 
         // Handle window resize (we don't resize directly in the WM_SIZE handler)
         if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
@@ -154,59 +169,88 @@ int main(int, char**)
         ImGui::NewFrame();
 
         bool showSks = true;
-
+        bool c_popup = false; //character popup
+        bool s_popup = false; //save dialog popup
+        bool l_popup = false; //load dialog popup
         {
             FFRot::ShowSKSWindow();
             FFRot::ShowTimelineWindow();
 
             if (ImGui::BeginMainMenuBar()) {
                 if (ImGui::BeginMenu("File")) {
-                    bool disableNew = FFRot::chara.size() == 8;
-                    if (disableNew)
-                        ImGui::BeginDisabled();
-                    if (ImGui::Button("New...", ImVec2(0, 0))) {
-                        ImGui::OpenPopup("New Char");
-                        cchara = FFRot::Character(FFRot::chara.size());
+                    if (ImGui::MenuItem("New...")) {
+                        c_popup = true;
                     }
-                    if (disableNew)
-                        ImGui::EndDisabled();
-                    if (ImGui::BeginPopupModal("New Char", NULL)) {
-
-                        ImGui::InputInt("str##char", &cchara.str, 0, 0);
-                        ImGui::InputInt("wis##char", &cchara.wis, 0, 0);
-                        ImGui::InputInt("vit##char", &cchara.vit, 0, 0);
-                        ImGui::InputInt("sks##char", &cchara.sks, 0, 0);
-                        ImGui::InputInt("sps##char", &cchara.sps, 0, 0);
-                        ImGui::InputInt("det##char", &cchara.det, 0, 0);
-                        ImGui::InputInt("dh##char", &cchara.dh, 0, 0);
-                        ImGui::InputInt("crit##char", &cchara.crit, 0, 0);
-                        ImGui::InputInt("pie##char", &cchara.pie, 0, 0);
-                        ImGui::InputInt("ten##char", &cchara.ten, 0, 0);
-                        ImGui::InputInt("hp##char", &cchara.hp, 0, 0);
-                        cchara.str = IM_CLAMP(cchara.str, 0, 10000);
-                        cchara.sks = IM_CLAMP(cchara.sks, 400, 2700);
-                        cchara.sps = IM_CLAMP(cchara.sps, 400, 2700);
-                        ImGui::Text("Make a character!");
-                        if (ImGui::Button("Create", ImVec2(120, 0))) {
-                            FFRot::chara.insert(FFRot::chara.end(), cchara);
-                            FFRot::chara[0].updateTicks(0);
-                            ImGui::CloseCurrentPopup();
-                        }
-                        if (ImGui::Button("Cancel", ImVec2(120, 0))) {
-                            ImGui::CloseCurrentPopup();
-                        }
-                        ImGui::EndPopup();
+                    if (ImGui::MenuItem("Load")) {
+                        l_popup = true;
+                    }
+                    if (ImGui::MenuItem("Save")) {
+                        s_popup = true;
                     }
                     ImGui::EndMenu();
-
                 }
-
-
-
-                ImGui::EndMainMenuBar();
+                ImGui::EndMainMenuBar();   
             }
         }
 
+        if (c_popup) {
+            ImGui::OpenPopup("New Char");
+        }
+
+        if (s_popup) {
+            ImGui::OpenPopup("Save");
+        }
+
+        if (l_popup) {
+            ImGui::OpenPopup("Load");
+        }
+
+        if (ImGui::BeginPopupModal("New Char")) {
+            cchara = FFRot::Character(FFRot::chara.size());
+            cchara.str = IM_CLAMP(cchara.str, 0, 10000);
+            cchara.sks = IM_CLAMP(cchara.sks, 400, 2700);
+            cchara.sps = IM_CLAMP(cchara.sps, 400, 2700);
+            ImGui::InputInt("str##char", &cchara.str, 0, 0);
+            ImGui::InputInt("wis##char", &cchara.wis, 0, 0);
+            ImGui::InputInt("vit##char", &cchara.vit, 0, 0);
+            ImGui::InputInt("sks##char", &cchara.sks, 0, 0);
+            ImGui::InputInt("sps##char", &cchara.sps, 0, 0);
+            ImGui::InputInt("det##char", &cchara.det, 0, 0);
+            ImGui::InputInt("dh##char", &cchara.dh, 0, 0);
+            ImGui::InputInt("crit##char", &cchara.crit, 0, 0);
+            ImGui::InputInt("pie##char", &cchara.pie, 0, 0);
+            ImGui::InputInt("ten##char", &cchara.ten, 0, 0);
+            ImGui::InputInt("hp##char", &cchara.hp, 0, 0);
+
+            ImGui::Text("Make a character!");
+            if (ImGui::Button("Create", ImVec2(120, 0))) {
+                FFRot::chara.insert(FFRot::chara.end(), cchara);
+                FFRot::chara[0].updateTicks(0);
+                ImGui::CloseCurrentPopup();
+            }
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+
+        if (s_popup) {
+            ImGuiFileDialog::Instance()->OpenDialog("SaveDialog", "Save as...", ".json", ".", 1, nullptr, ImGuiFileDialogFlags_Modal);
+        }
+
+        if (ImGuiFileDialog::Instance()->Display("SaveDialog",ImGuiWindowFlags_NoCollapse, ImVec2(400,200))) {
+            if (ImGuiFileDialog::Instance()->IsOk()) {
+                json j_out = FFRot::skillList;
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+                std::string dir = filePath.append(filePathName);
+                std::ofstream o(dir);
+                o << std::setw(4) << j_out << std::endl;
+            }
+
+            ImGuiFileDialog::Instance()->Close();
+
+        }
 
         // Rendering
         ImGui::Render();

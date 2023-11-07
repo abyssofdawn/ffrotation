@@ -1,0 +1,44 @@
+[
+    {
+        "cast": false,
+        "cd": 30000,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 30000,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 25000,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 7500,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 7500,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 7500,
+        "gcd": true,
+        "lock": 100
+    },
+    {
+        "cast": false,
+        "cd": 2500,
+        "gcd": true,
+        "lock": 100
+    }
+]

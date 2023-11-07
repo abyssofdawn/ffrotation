@@ -13,7 +13,7 @@ namespace FFRot {
 		ImVec2 sz = ImGui::GetContentRegionAvail();
 		int padding = 0;
 		int ypadding = 5;
-		int height = 20;
+		int height = 5;
 		int pheight = height + padding;
 
 		int width = sz.x - 2 * padding;
@@ -21,10 +21,17 @@ namespace FFRot {
 		draw_list->AddRectFilled(ImVec2(p0.x + padding, p0.y), ImVec2(width + p0.x + padding, p0.y + height), ImColor(100, 200, 255));
 		int posx;
 		int dposx;
-		// draws white lines for calculated gcd of first character 
 
 		if (chara.size() > 0) {
-			for (int i = 0; i < chara[0].gcdTicks.size(); i++) {
+
+			for (auto& tick : chara.at(0).gcdTicks) {//draws range where ogcds can be used (and assumes ogcd anim lock is 500ms, will be changed later for "selecting" ogcds)
+				posx = int((tick.tick.ms + tick.skill->lock + chara.at(0).ping) / step_size);
+				int posx2 = int((tick.tick.ms + tick.tick.delay - 500) / step_size);
+				if (!(posx > width))
+					draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y), ImVec2(p0.x + padding + posx2, p0.y + height), ImColor(110, 163, 108));
+				else break;
+			}
+			for (int i = 0; i < chara[0].gcdTicks.size(); i++) {// draws white lines for calculated gcd of first character 
 				posx = int((chara[0].gcdTicks[i].tick.ms) / step_size);
 
 				if (!(posx > width))
@@ -42,17 +49,14 @@ namespace FFRot {
 					dposx = int((it->ms - it->delay) / step_size);
 					if (!(posx > width)) {
 						draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx + 1, p0.y + (n + 2) * height), ImColor(50, 100, 200));
-						draw_list->AddRectFilled(ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx, p0.y + (n + 2) * height), ImColor(255, 0, 0, 200));
+						draw_list->AddRectFilled(ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx, p0.y + (n + 2) * height), ImColor(163, 91, 91));
 					}
 					else break;
 				}
 			}
 
+
 		}
-
-
-
-
 
 
 		ImGui::PopStyleVar();

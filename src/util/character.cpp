@@ -157,10 +157,10 @@ namespace FFRot {
 
 	Character::Character(int _id) {
 		id = _id;
-		skills.push_back({ &skillList[0], {}});
-		skills.push_back({ &skillList[1], {} });
-		skills.push_back({ &skillList[2], {} });
-		skills.push_back({ &skillList[3], {} });
+		for (auto& it : skillList) {
+			skills.push_back({ &it, {} });
+
+		}
 
 		str = 0;
 		crit = 0;
