@@ -257,7 +257,10 @@ int main(int, char**)
                 i.close();
 
                 FFRot::skillList = j_in;
-                FFRot::chara.at(FFRot::selectedChar).makeSkills();
+                if (!FFRot::chara.empty()) {
+                    FFRot::chara.at(FFRot::selectedChar).clearSkills();
+                    FFRot::chara.at(FFRot::selectedChar).makeSkills();
+                }
             }
 
             ImGuiFileDialog::Instance()->Close();

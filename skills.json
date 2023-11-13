@@ -3,7 +3,7 @@
         "cast": false,
         "cd": 30000,
         "gcd": true,
-        "lock": 100
+        "lock": 600
     },
     {
         "cast": false,
