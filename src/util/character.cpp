@@ -151,17 +151,20 @@ namespace FFRot {
 		}
 	}
 
+	void Character::makeSkills() {
+		for (auto& it : skillList) {
+			skills.push_back({ &it, {} });
+		}
+	}
+
+
 	Character::Character() {
 		id = 0;
 	}
 
 	Character::Character(int _id) {
 		id = _id;
-		for (auto& it : skillList) {
-			skills.push_back({ &it, {} });
-
-		}
-
+		makeSkills();
 		str = 0;
 		crit = 0;
 		det = 0;

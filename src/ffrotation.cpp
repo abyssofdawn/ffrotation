@@ -122,12 +122,6 @@ int main(int, char**)
     FFRot::skillList.push_back({ true, false, 20000, 100 });
     FFRot::skillList.push_back({ true, false, 30000, 100 });*/
 
-    std::ifstream i("skills.json");
-    json j_in;
-    i >> j_in;
-    i.close();
-
-    FFRot::skillList = j_in;
 
 
 
@@ -242,10 +236,28 @@ int main(int, char**)
             if (ImGuiFileDialog::Instance()->IsOk()) {
                 json j_out = FFRot::skillList;
                 std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-                std::string dir = filePath.append(filePathName);
-                std::ofstream o(dir);
+                std::ofstream o(filePathName);
                 o << std::setw(4) << j_out << std::endl;
+            }
+
+            ImGuiFileDialog::Instance()->Close();
+
+        }
+
+        if (l_popup) {
+            ImGuiFileDialog::Instance()->OpenDialog("LoadDialog", "Open...", ".json", ".", 1, nullptr, ImGuiFileDialogFlags_Modal);
+        }
+
+        if (ImGuiFileDialog::Instance()->Display("LoadDialog", ImGuiWindowFlags_NoCollapse, ImVec2(400, 200))) {
+            if (ImGuiFileDialog::Instance()->IsOk()) {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::ifstream i(filePathName);
+                json j_in;
+                i >> j_in;
+                i.close();
+
+                FFRot::skillList = j_in;
+                FFRot::chara.at(FFRot::selectedChar).makeSkills();
             }
 
             ImGuiFileDialog::Instance()->Close();
