@@ -54,6 +54,7 @@ namespace FFRot {
 		void updateTicks(int index);
 		bool isOnCD(int index, int ms);
 		void fitGCDAuto(int maxSearch);
+		void makeSkills();
 		void addTick(int index, int ms);
 		int getGCDLength(int index);
 		int getAdjustedCD(Skill* skill);
@@ -73,6 +74,7 @@ namespace FFRot {
 	extern std::vector<TimelineStats> t_stats;
 	extern void to_json(json& j, const Skill& skill);
 	extern void from_json(const json& j, Skill& skill);
+	extern int selectedChar;
 	
 
 }

@@ -47,6 +47,7 @@ namespace FFRot {
 
 	}
 
+	int selectedChar = 0;
 
 
 
