@@ -56,13 +56,13 @@ namespace FFRot {
 
 			for (int n = 0; n < chara.at(selectedChar).skills.size(); n++) {
 				ImGui::SetCursorPosY(ImGui::GetCursorPosY() + height);//moves cursor down for every skill
-				for (auto it = chara.at(selectedChar).skills[n].ticks.begin(); it != chara.at(selectedChar).skills[n].ticks.end(); ++it) {//loop through all skills, draws delay and ticks on separate lines that go up to the top of the original timeline
+				for (auto it = chara.at(selectedChar).skills[n].ticks.begin(); it != chara.at(selectedChar).skills[n].ticks.end(); ++it) {//loop through all skills, draws delay and ticks on new lines
 
 					posx = int(it->ms / step_size);
 					dposx = int((it->ms - it->delay) / step_size);
 					if (!(posx > width)) {
-						draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx + 1, p0.y + (n + 2) * height), ImColor(50, 100, 200));
-						draw_list->AddRectFilled(ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx, p0.y + (n + 2) * height), ImColor(163, 91, 91));
+						draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx + 1, p0.y + (n + 2) * height), ImColor(50, 100, 200)); //delay
+						draw_list->AddRectFilled(ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx, p0.y + (n + 2) * height), ImColor(163, 91, 91));//tick
 					}
 					else break;
 				}
@@ -102,21 +102,29 @@ namespace FFRot {
 
 		ImGui::PopStyleVar();
 
-		
 
+		if (chara.size() > 0 && !skillList.empty() && chara.at(selectedChar).selectedSkill > -1 ) 
+		{
 
-		if (chara.size() > 0 && !skillList.empty()) {
+			Character* selchar = &chara.at(selectedChar);
+			CharSkill selSkill = selchar->skills.at(selchar->selectedSkill);
+
+			ImGui::Text(fmt::format("{} {} {}",
+				selchar->getLastUsedGeneralIndexByTime(mousems),
+				selchar->getNextUsedGeneralIndexByTime(mousems),
+				selchar->generalTicks.at(selchar->getLastUsedGeneralIndexByTime(mousems)).ms
+				).c_str());
 			if (ImGui::BeginListBox("ticks")) {
-				/*if (chara.at(selectedChar).skills.at(0).ticks.size() > 0) {
-					for (int n = 0; n < chara.at(selectedChar).skills.at(0).ticks.size(); n++) {
-						ImGui::Text(fmt::format("{} {}", chara.at(selectedChar).skills.at(0).ticks.at(n).ms, chara.at(selectedChar).skills.at(0).ticks.at(n).delay).c_str());
+				if (selSkill.ticks.size() > 0) {
+					for (int n = 0; n < selSkill.ticks.size(); n++) {
+						ImGui::Text(fmt::format("{} {}", selSkill.ticks.at(n).ms, selSkill.ticks.at(n).delay).c_str());
 					}
-				}*/
-				if (chara.at(selectedChar).gcdTicks.size() > 0) {
+				}
+				/*if (chara.at(selectedChar).gcdTicks.size() > 0) {
 					for (int n = 0; n < chara.at(selectedChar).gcdTicks.size(); n++) {
 						ImGui::Text(fmt::format("{} {}", chara.at(selectedChar).gcdTicks.at(n).ms, chara.at(selectedChar).gcdTicks.at(n).recast).c_str());
 					}
-				}
+				}*/
 				ImGui::EndListBox();
 			}
 		}

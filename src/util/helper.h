@@ -47,6 +47,8 @@ namespace FFRot {
 		int gcd;
 		std::vector<CharSkill> skills = {};
 		std::vector<GeneralTick> gcdTicks = {};
+		std::vector<GeneralTick> generalTicks = {};
+
 		void clearTicks();
 		void clearSkills();
 		void pushSkillTick(int index, int ms);
@@ -54,15 +56,22 @@ namespace FFRot {
 		bool isOffCd(int index, int ms);
 		int getLastUseByTime(int index, int ms);
 		GeneralTick getLastUsedGCDByTime(int ms);
+		int getLastUsedGeneralIndexByTime(int ms);
+		int getNextUsedGeneralIndexByTime(int ms);
 		GeneralTick getNextUsedGCDByTime(int ms);
 		int getLastUsedGCDIndexByTime(int ms);
 		int getNextUsedGCDIndexByTime(int ms);
+		int getLatestUsedOGCDIndex();
 		int getSpeedStatForSkill(int index);
+		int getSpeedStatForSkill(Skill* skill);
+		int getAnimationLockForSkill(int index);
+		int getAnimationLockForSkill(Skill* skill);
 		enum Job cjob;
 		void updateTicks(int index);
 		void fitGCDAuto(int maxSearch);
 		void fitOGCDAuto(int maxSearch);
 		void makeSkills();
+		int selectedSkill = -1;
 		Character();
 		Character(int id);
 

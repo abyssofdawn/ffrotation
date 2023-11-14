@@ -6,66 +6,92 @@ namespace FFRot {
 	// tick array helpers
 	
 	void Character::updateTicks(int index) {
-		
+
 		clearTicks();
 		fitGCDAuto(10000);
+		fitOGCDAuto(10000);
 
 	}
-
 	void Character::clearTicks() {
 		for (int i = 0; i < skills.size(); i++)
 			skills[i].ticks.clear();
+		generalTicks.clear();
+		gcdTicks.clear();
 	}
-
+	void Character::makeSkills() {
+		for (auto& it : skillList) {
+			skills.push_back({ &it, {} });
+		}
+	}
 	void Character::clearSkills()
 	{
 		skills.clear();
 	}
-	
 	void Character::pushSkillTick(int index, int ms) {
-		skills.at(index).ticks.push_back({ ms, (skills.at(index).ticks.size() > 0 ? ms - skills.at(index).ticks.back().ms - newCdms(skills.at(index).skill->cd, getSpeedStatForSkill(index)) : 0)});
+		skills.at(index).ticks.push_back({ ms, (skills.at(index).ticks.size() > 0 ? ms - skills.at(index).ticks.back().ms - newCdms(skills.at(index).skill->cd, getSpeedStatForSkill(index)) : 0) });
 	}
-
 	// skill methods
 
 	int Character::inUsableRange(int index, int ms) { //returns the first available slot, if no adjustment needed, return initial ms
 		
-		if (skills.size() <= 1) return ms;  // if theres only one skill skip animation lock check
+		if (index < 1) return ms;  // if theres only one skill skip animation lock check
 		
-		int endlockdur = skills.at(index).skill->lock + ping + 500;
+		int endlockdur = getAnimationLockForSkill(index);
+		int startlockdur = 0;
+		CharSkill skill = skills.at(index);
+		int check = ms;
 
+		if (skill.ticks.empty()) {
+			check = skills.at(index - 1).ticks.front().ms + getAnimationLockForSkill(index - 1)+10;
+			if (!skills.at(index - 1).skill->gcd) check += 100;
+		}
 
-		int lastticktime = 0;
+		int lasttickindex = getLastUsedGeneralIndexByTime(check);
+		int lastticktime = generalTicks.at(lasttickindex).ms;
 		int nextticktime = t_stats.at(id).dur;
-		Skill* lasttickptr = (index == 0 ? skills.at(1).skill : skills.at(0).skill);
-		Skill* nexttickptr = gcdTicks.back().skill;
-		
-		for (int i = 0; i < skills.size(); i++)
+		GeneralTick prev = {};
+		GeneralTick i;
+		if (generalTicks.size() > 1)
 		{
-			if (i != index) {
-				for (auto j = skills.at(i).ticks.begin(); j < skills.at(i).ticks.end(); j++)
-				{
-					int timer = j->ms;
-					if (timer > lastticktime && timer < ms) {
-						lastticktime = timer;
-						if (ms - lastticktime < skills.at(i).skill->lock + ping)
+			for (int j = lasttickindex + 1; j < generalTicks.size(); j++)
+			{
+				i = generalTicks.at(j);
+				prev = generalTicks.at(j - 1);
+				if (prev.skill != skill.skill) {
+					//if (isOffCd(index, prev.ms))
+					//{
+						bool shift = false;
+						bool shift2 = false;
+						lastticktime = prev.ms;
+						//ms = (skill.ticks.empty() ? ms : skill.ticks.back().ms);
+						startlockdur = getAnimationLockForSkill(prev.skill);
+						if (ms - lastticktime < startlockdur)
 						{
-							
+							ms = lastticktime + startlockdur;
 						}
-					}
+						//endlockdur = getAnimationLockForSkill(skill.skill);
+						nextticktime = i.ms;
+						if (nextticktime - ms <= endlockdur) {
+							ms = nextticktime + getAnimationLockForSkill(i.skill);
+							shift2 = true;
+						} 
+						if(!shift2) return ms;
+					//}
 
 				}
 			}
 		}
+		else if (skill.ticks.size()==0)
+		{
+			return getAnimationLockForSkill(generalTicks.at(0).skill) + generalTicks.at(0).ms;
+		} 
 		return ms;
 	}
-
 	bool Character::isOffCd(int index, int ms) {
 		int adjustedCd = newCdms(skills.at(index).skill->cd, getSpeedStatForSkill(index))-1;
 
 		return (!skills.at(index).ticks.empty() ? ms - getLastUseByTime(index, ms) >= adjustedCd : true);
 	}
-
 	int Character::getLastUseByTime(int index, int ms) {
 		int lastUsedMs = 0;
 		for (auto& i : skills.at(index).ticks)
@@ -81,7 +107,6 @@ namespace FFRot {
 		}
 		return lastUsedMs;
 	}
-
 	GeneralTick Character::getLastUsedGCDByTime(int ms) {
 		if (gcdTicks.size() > 0 && ms >= 0) {
 			for (int i = gcdTicks.size()-1; i >= 0; i--) {
@@ -92,7 +117,27 @@ namespace FFRot {
 		}
 		return gcdTicks.at(0);
 	}
+	int Character::getLastUsedGeneralIndexByTime(int ms) {
+		if (!generalTicks.empty() && ms >= 0) {
+			for (int i = generalTicks.size() - 1; i >= 0; i--) {
+				if (generalTicks.at(i).ms <= ms) {
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
+	int Character::getNextUsedGeneralIndexByTime(int ms) {
+		if(!generalTicks.empty() && ms <= t_stats.at(id).dur){
+			for (int i = 0; i < generalTicks.size(); i++) {
+				if (generalTicks.at(i).ms > ms) {
+					return i;
+				}
+			}
 
+		}
+		return generalTicks.size();
+	}
 	GeneralTick Character::getNextUsedGCDByTime(int ms) {
 		if (gcdTicks.size() > 0 && ms <= t_stats.at(id).dur) {
 			for (int i = 0; i < gcdTicks.size(); i++)
@@ -104,9 +149,8 @@ namespace FFRot {
 			}
 		}
 		
-		return gcdTicks.back();
+		return gcdTicks.front();
 	}
-
 	int Character::getLastUsedGCDIndexByTime(int ms) {
 		if (gcdTicks.size() > 0 && ms >= 0) {
 			for (int i = gcdTicks.size() - 1; i >= 0; i--) {
@@ -117,8 +161,6 @@ namespace FFRot {
 		}
 		return 0;
 	}
-
-
 	int Character::getNextUsedGCDIndexByTime(int ms) {
 		if (gcdTicks.size() > 0 && ms <= t_stats.at(id).dur) {
 			for (int i = 0; i < gcdTicks.size(); i++)
@@ -132,23 +174,42 @@ namespace FFRot {
 
 		return (gcdTicks.empty() ? 0 : gcdTicks.size()-1);
 	}
+	int Character::getLatestUsedOGCDIndex() {
+		if (skills.size() > 0 ) {
+			for (int i = skills.size() - 1; i >= 0; i--) {
+				if (!skills.at(i).skill->gcd && !skills.at(i).ticks.empty()) {
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
 
 	// misc helpers
 
 	int Character::getSpeedStatForSkill(int index) {
 		return (skills.at(index).skill->cast ? sps : sks);
 	}
+	int Character::getSpeedStatForSkill(Skill* skill) {
+		return (skill->cast ? sps : sks);
+	}
+	int Character::getAnimationLockForSkill(int index) {
+		CharSkill skill = skills.at(index);
+		return skill.skill->lock + (skill.skill->gcd ? 100 : 500) + ping;
+	}
+	int Character::getAnimationLockForSkill(Skill* skill) {
+		return skill->lock + (skill->gcd ? 100 : 500) + ping;
+	}
 
 	// automatic skill alignment
 
 	void Character::fitGCDAuto(int maxSearch = 10000) //trys to automatically build a gcd timeline. skill slotting priority is by small to large index in skills[]
 	{
-		gcdTicks.clear();
 		int dur = 0;
 		int tempcd = 0;
 		int stat = sks; 
 		Skill* skill = nullptr;
-		while (dur < FFRot::t_stats.at(id).dur) {  //step through the whole duration of the timeline for this character
+		while (dur < t_stats.at(id).dur) {  //step through the whole duration of the timeline for this character
 			for (int i = 0; i < skills.size(); i++) {//if a skill is on cd, itll be skipped, otherwise it is the next gcd and the rest are skipped
 				skill = skills.at(i).skill;
 				if (!isOffCd(i, dur))
@@ -157,7 +218,7 @@ namespace FFRot {
 				}
 				else if (isOffCd(i, dur) && skills.at(i).skill->gcd)
 				{
-					stat = (skill->cast ? sps : sks);
+					stat = getSpeedStatForSkill(skill);
 					pushSkillTick(i, dur);
 					break;
 				}
@@ -170,35 +231,39 @@ namespace FFRot {
 			tempcd = newCdms(2500, stat);
 
 			gcdTicks.push_back({skill, dur, tempcd + dur});
+			int index = getNextUsedGeneralIndexByTime(dur);
+			generalTicks.insert(generalTicks.begin() + index, { skill, dur, 0 });
 			dur += tempcd;
 			tempcd = 0;
 		}
 	}
-
 	void Character::fitOGCDAuto(int maxSearch = 10000) 
 	{
 		int dur = 0;
-		while (dur < FFRot::t_stats.at(id).dur) {  //step through the whole duration of the timeline for this character
-			for (int i = 0; i < skills.size(); i++) {
-				if (!isOffCd(i, dur))
-				{
-					continue;
+		int temp = 0;
+		for (int i = 0; i < skills.size(); i++) {
+			dur +=temp;			
+			if (!skills.at(i).skill->gcd)
+			{
+				while (dur < t_stats.at(id).dur) {
+					int t = inUsableRange(i, dur);
+					int d = t - dur;
+					int index = getNextUsedGeneralIndexByTime(t);
+					generalTicks.insert(generalTicks.begin() + index, { skills.at(i).skill, dur, 0});
+
+					pushSkillTick(i, t);
+					dur = t + skills.at(i).skill->cd;
 				}
+				temp += getAnimationLockForSkill(i);
 			}
 		}
 	}
 
-	void Character::makeSkills() {
-		for (auto& it : skillList) {
-			skills.push_back({ &it, {} });
-		}
-	}
-
+	//constructors and stuff
 
 	Character::Character() {
 		id = 0;
 	}
-
 	Character::Character(int _id) {
 		id = _id;
 		makeSkills();
