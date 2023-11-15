@@ -15,8 +15,16 @@ namespace FFRot {
 
         ImGui::PopItemWidth();
         cd = clampFloat(cd, 0.01f, 180.0f);
+        ImGui::PushItemWidth(TEXT_BASE_WIDTH * 4);
 
-
+        if (chara.size() > 0 && ImGui::BeginCombo("pick char", fmt::format("{}", selectedChar).c_str())) {
+            for (int i = 0; i < chara.size(); i++) {
+                if (ImGui::Selectable(fmt::format("{}##char num{}", i, i).c_str(), selectedChar == i))
+                    selectedChar = i;
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::PopItemWidth();
 
         // character table
         ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 12);
@@ -49,10 +57,10 @@ namespace FFRot {
 
                             
                         ImGui::TableNextColumn(); //character id
-                        std::string id = fmt::format("{}##char id {}", row, _skill);
-                        if (ImGui::Selectable(id.c_str(), selectedChar == row)) 
+                        std::string id = fmt::format("{}##skill id {}", _skill, row);
+                        if (ImGui::Selectable(id.c_str(), chara.at(selectedChar).selectedSkill == _skill)) 
                         {
-                            selectedChar = row;
+                            chara.at(selectedChar).selectedSkill = _skill;
                         }
                         PushStyleCompact();
                         ImGui::TableNextColumn(); //sks/sps
@@ -61,7 +69,7 @@ namespace FFRot {
                         ImGui::InputInt(id.c_str(), (skill.skill->cast ? &chara.at(row).sps : &chara.at(row).sks), 1, 10);
                         chara.at(row).sks = clampInt(chara.at(row).sks, 400, 2700);
                         chara.at(row).sps = clampInt(chara.at(row).sps, 400, 2700);
-                        skill.skill->cd = clampInt(skill.skill->cd, 10, 180000);
+ 
                         ImGui::PopItemWidth();
 
                         ImGui::TableNextColumn(); //original cd in ms
@@ -69,6 +77,7 @@ namespace FFRot {
                         ImGui::PushItemWidth(TEXT_BASE_WIDTH * 18);
                         id = fmt::format("##chara table cd{} {}", row, _skill);
                         ImGui::InputInt(id.c_str(), &skill.skill->cd, 10, 100);
+                        skill.skill->cd = clampInt(skill.skill->cd, 200, 180000);
                         ImGui::PopItemWidth();
 
                         ImGui::TableNextColumn(); //new cd in s

@@ -17,11 +17,6 @@ namespace FFRot {
 	extern void PushStyleCompact();
 	extern void PopStyleCompact();
 
-	struct Tick {
-		int ms;
-		int delay;
-	};
-
 	struct Skill {
 		bool gcd = true;
 		bool cast = false;
@@ -30,14 +25,18 @@ namespace FFRot {
 	};
 
 	extern std::vector<Skill> skillList;
+	struct SkillTick {
+		int ms;
+		int delay;
+	};
 	struct CharSkill {
 		Skill* skill;
-		std::vector<Tick> ticks;
+		std::vector<SkillTick> ticks;
 	};
-	struct GCDTick {
+	struct GeneralTick {
 		Skill* skill;
-		Tick tick;
-
+		int ms;
+		int recast;
 	};
 	class Character {
 
@@ -47,25 +46,36 @@ namespace FFRot {
 		int str, wis, vit, sks, sps, det, dh, crit, pie, ten, hp, _int;
 		int gcd;
 		std::vector<CharSkill> skills = {};
-		std::vector<GCDTick> gcdTicks = {};
+		std::vector<GeneralTick> gcdTicks = {};
+		std::vector<GeneralTick> generalTicks = {};
+
 		void clearTicks();
-		void fitOGCD(int index, int ms);
+		void clearSkills();
+		void pushSkillTick(int index, int ms);
+		int inUsableRange(int index, int ms);
+		bool isOffCd(int index, int ms);
+		int getLastUseByTime(int index, int ms);
+		GeneralTick getLastUsedGCDByTime(int ms);
+		int getLastUsedGeneralIndexByTime(int ms);
+		int getNextUsedGeneralIndexByTime(int ms);
+		GeneralTick getNextUsedGCDByTime(int ms);
+		int getLastUsedGCDIndexByTime(int ms);
+		int getNextUsedGCDIndexByTime(int ms);
+		int getLatestUsedOGCDIndex();
+		int getLatestGeneralUseForIndex(int index);
+		int getSpeedStatForSkill(int index);
+		int getSpeedStatForSkill(Skill* skill);
+		int getAnimationLockForSkill(int index);
+		int getAnimationLockForSkill(Skill* skill);
 		enum Job cjob;
 		void updateTicks(int index);
-		bool isOnCD(int index, int ms);
 		void fitGCDAuto(int maxSearch);
+		void fitOGCDAuto(int maxSearch);
 		void makeSkills();
-		void addTick(int index, int ms);
-		int getGCDLength(int index);
-		int getAdjustedCD(Skill* skill);
-		int getLastTickDelta(int index, int ms);
+		int selectedSkill = -1;
 		Character();
 		Character(int id);
-		GCDTick getLatestGCD(int ms);
-		int getNextGCD(int ms);
-		int getGCDNumber(int ms);
-		int getLastUsedAtTime(int index, int ms);
-		int getLastUsed(int index);
+
 	};
 	extern std::vector<Character> chara;
 	struct TimelineStats { 
