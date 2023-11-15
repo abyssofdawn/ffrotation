@@ -43,8 +43,10 @@ namespace FFRot {
 
 		if (skill.ticks.empty()) {
 			if(skills.at(index-1).ticks.size() > 0)
+			{
 				check = skills.at(index - 1).ticks.front().ms + getAnimationLockForSkill(index - 1) + 10;
-			if (!skills.at(index - 1).skill->gcd) check += 100;
+				if (!skills.at(index - 1).skill->gcd) check += 100;
+			}
 		}
 
 		int lasttickindex = getLastUsedGeneralIndexByTime(check);
