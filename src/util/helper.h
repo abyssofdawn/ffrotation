@@ -62,6 +62,7 @@ namespace FFRot {
 		int getLastUsedGCDIndexByTime(int ms);
 		int getNextUsedGCDIndexByTime(int ms);
 		int getLatestUsedOGCDIndex();
+		int getLatestGeneralUseForIndex(int index);
 		int getSpeedStatForSkill(int index);
 		int getSpeedStatForSkill(Skill* skill);
 		int getAnimationLockForSkill(int index);

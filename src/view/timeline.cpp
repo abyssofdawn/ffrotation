@@ -14,7 +14,7 @@ namespace FFRot {
 		ImVec2 sz = ImGui::GetContentRegionAvail();
 		int padding = 0;
 		int ypadding = 5;
-		int height = 5;
+		int height = 7;
 		int pheight = height + padding;
 
 		int width = sz.x - 2 * padding;
