@@ -22,6 +22,7 @@ namespace FFRot {
 		bool cast = false;
 		int cd = 2500;
 		int lock = 100;
+		int recast = 2500;
 	};
 
 	extern std::vector<Skill> skillList;

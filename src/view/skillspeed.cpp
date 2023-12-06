@@ -29,12 +29,14 @@ namespace FFRot {
         // character table
         ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 12);
         static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable | ImGuiTableFlags_NoHostExtendX | ImGuiTableFlags_SizingFixedFit;
-        if (chara.size() > 0 && ImGui::BeginTable("character_table", 6, flags))
+        if (chara.size() > 0 && ImGui::BeginTable("character_table", 7, flags))
         {
             ImGui::TableSetupScrollFreeze(0, 1); 
             ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 2);
             ImGui::TableSetupColumn("Skill speed", ImGuiTableColumnFlags_WidthStretch);
             ImGui::TableSetupColumn("CD", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableSetupColumn("Recast", ImGuiTableColumnFlags_WidthStretch);
+
             ImGui::TableSetupColumn("New CD", ImGuiTableColumnFlags_WidthStretch);
 
             ImGui::TableSetupColumn("GCD?", ImGuiTableColumnFlags_WidthFixed);
@@ -78,6 +80,14 @@ namespace FFRot {
                         id = fmt::format("##chara table cd{} {}", row, _skill);
                         ImGui::InputInt(id.c_str(), &skill.skill->cd, 10, 100);
                         skill.skill->cd = clampInt(skill.skill->cd, 200, 180000);
+                        ImGui::PopItemWidth();
+
+                        ImGui::TableNextColumn(); //recast in ms
+                        int rcd = skill.skill->cd / 1000.0f;
+                        ImGui::PushItemWidth(TEXT_BASE_WIDTH * 18);
+                        id = fmt::format("##chara table rc{} {}", row, _skill);
+                        ImGui::InputInt(id.c_str(), &skill.skill->recast, 10, 100);
+                        skill.skill->recast = clampInt(skill.skill->recast, 200, 180000);
                         ImGui::PopItemWidth();
 
                         ImGui::TableNextColumn(); //new cd in s

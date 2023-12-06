@@ -3,42 +3,49 @@
         "cast": false,
         "cd": 30000,
         "gcd": true,
-        "lock": 600
+        "lock": 600,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 30000,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 25000,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 7500,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 7500,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 7500,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     },
     {
         "cast": false,
         "cd": 2500,
         "gcd": true,
-        "lock": 100
+        "lock": 100,
+        "recast": 2500
     }
 ]

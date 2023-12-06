@@ -14,7 +14,7 @@ namespace FFRot {
 		ImVec2 sz = ImGui::GetContentRegionAvail();
 		int padding = 0;
 		int ypadding = 5;
-		int height = 7;
+		int height = 10;
 		int pheight = height + padding;
 
 		int width = sz.x - 2 * padding;
@@ -60,9 +60,20 @@ namespace FFRot {
 
 					posx = int(it->ms / step_size);
 					dposx = int((it->ms - it->delay) / step_size);
+					int cposx = int((it->ms + newCdms(chara.at(selectedChar).skills.at(n).skill->cd, chara.at(selectedChar).getSpeedStatForSkill(n))) / step_size);
 					if (!(posx > width)) {
-						draw_list->AddRectFilled(ImVec2(p0.x + padding + posx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx + 1, p0.y + (n + 2) * height), ImColor(50, 100, 200)); //delay
-						draw_list->AddRectFilled(ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height), ImVec2(p0.x + padding + posx, p0.y + (n + 2) * height), ImColor(163, 91, 91));//tick
+						draw_list->AddRectFilled(
+							ImVec2(p0.x + padding + dposx, p0.y + (n + 1) * height),
+							ImVec2(p0.x + padding + posx, int(p0.y + (n + 1.5) * height)),
+							ImColor(121, 73, 73));//delay
+						draw_list->AddRectFilled(
+							ImVec2(p0.x + padding + posx, int(p0.y + (n + 1.5) * height)), 
+							ImVec2(p0.x + padding + cposx + 1, p0.y + (n + 2) * height), 
+							ImColor(40,40,40)); //cd
+						draw_list->AddRectFilled(
+							ImVec2(p0.x + padding + posx, p0.y + (n + 1) * height), 
+							ImVec2(p0.x + padding + posx + 1, p0.y + (n + 2) * height), 
+							ImColor(50, 100, 200)); //tick
 					}
 					else break;
 				}

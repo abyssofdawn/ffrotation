@@ -35,7 +35,7 @@ namespace FFRot {
 
 	void to_json(json& j, const Skill& skill)
 	{
-		j = json{ {"gcd", skill.gcd}, {"cast", skill.cast}, {"cd", skill.cd}, {"lock", skill.lock} };
+		j = json{ {"gcd", skill.gcd}, {"cast", skill.cast}, {"cd", skill.cd}, {"lock", skill.lock}, {"recast", skill.recast}};
 	}
 
 	void from_json(const json& j, Skill& skill)
@@ -44,7 +44,7 @@ namespace FFRot {
 		j.at("cast").get_to(skill.cast);
 		j.at("cd").get_to(skill.cd);
 		j.at("lock").get_to(skill.lock);
-
+		j.at("recast").get_to(skill.recast);
 	}
 
 	int selectedChar = 0;

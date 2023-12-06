@@ -6,10 +6,17 @@ namespace FFRot {
 	// tick array helpers
 
 	void Character::updateTicks(int index) {
+		bool autofill = false;
+		if (autofill)
+		{
+			clearTicks();
+			fitGCDAuto(10000);
+			fitOGCDAuto(10000);
+		}
+		else
+		{
 
-		clearTicks();
-		fitGCDAuto(10000);
-		fitOGCDAuto(10000);
+		}
 
 	}
 	void Character::clearTicks() {
@@ -44,7 +51,7 @@ namespace FFRot {
 		if (skill.ticks.empty()) {
 			if(skills.at(index-1).ticks.size() > 0)
 			{
-				check = skills.at(index - 1).ticks.front().ms + getAnimationLockForSkill(index - 1) + 10;
+				check = skills.at(index - 1).ticks.front().ms + getAnimationLockForSkill(index - 1);
 				if (!skills.at(index - 1).skill->gcd) check += 100;
 			}
 		}
@@ -227,22 +234,38 @@ namespace FFRot {
 
 	void Character::fitGCDAuto(int maxSearch = 10000) //trys to automatically build a gcd timeline. skill slotting priority is by small to large index in skills[]
 	{
-		int dur = 0;
-		int tempcd = 0;
-		int stat = sks; 
+		int dur = 0; //when the skill occurs
+		int tempcd = 0; //step length. increments the dur every loop so it can escape the while loop
+		int stat = sks; //stat # to be used in speed up calculation
+		int gcdLength = 0; //how long the gcd will be rolling after a skill
 		Skill* skill = nullptr;
 		while (dur < t_stats.at(id).dur) {  //step through the whole duration of the timeline for this character
 			for (int i = 0; i < skills.size(); i++) {//if a skill is on cd, itll be skipped, otherwise it is the next gcd and the rest are skipped
 				skill = skills.at(i).skill;
-				if (!isOffCd(i, dur))
+				if (!isOffCd(i, dur)) //if still cooling down skip it
 				{
 					continue;
 				}
-				else if (isOffCd(i, dur) && skills.at(i).skill->gcd)
+			/*	if skill is not cooling down(aka it CAN be executed) and the skill is a gcd, get gcd recast from previous gcd.
+				if 
+				if the previous gcd time plus its gcd recast has the skill still off cooldown, set dur to that time (ms+recast) to "click" it into place asap
+			*/	
+				else if (isOffCd(i, dur) && skill->gcd) 
 				{
 					stat = getSpeedStatForSkill(skill);
-					pushSkillTick(i, dur);
-					break;
+					GeneralTick last = getLastUsedGCDByTime(dur);
+					int lastSkill = getLastUseByTime(i, dur);
+					int recast = newCdms(last.skill->recast, stat);
+					int earliest = std::min(isOffCd(i, recast + last.ms) ? recast + last.ms : INT64_MAX, isOffCd(i, lastSkill+newCdms( skill->cd, stat)) ? lastSkill + newCdms(skill->cd, stat) : INT64_MAX );
+					if (earliest < dur) {
+
+						dur = earliest;
+
+						pushSkillTick(i, dur);
+						gcdLength = recast;
+						break;
+
+					}
 				}
 				else 
 				{
@@ -250,11 +273,11 @@ namespace FFRot {
 				}
 
 			}
-			tempcd = newCdms(2500, stat);
+			tempcd = gcdLength;
 
 			gcdTicks.push_back({skill, dur, tempcd + dur});
 			int index = getNextUsedGeneralIndexByTime(dur);
-			generalTicks.insert(generalTicks.begin() + index, { skill, dur, 0 });
+			generalTicks.insert(generalTicks.begin() + index, { skill, dur, tempcd});
 			dur += tempcd;
 			tempcd = 0;
 		}
@@ -275,7 +298,7 @@ namespace FFRot {
 					int d = t - dur;
 
 					int index = getNextUsedGeneralIndexByTime(t);
-					generalTicks.insert(generalTicks.begin() + index, { skills.at(i).skill, t, 0});
+					generalTicks.insert(generalTicks.begin() + index, { skills.at(i).skill, t, skills.at(i).skill->recast});
 
 					pushSkillTick(i, t);
 					dur = t + skills.at(i).skill->cd;
