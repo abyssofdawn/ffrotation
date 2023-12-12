@@ -16,14 +16,59 @@ namespace FFRot {
 	inline float clampFloat(float V, float MN, float MX) { return ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V)); }
 	extern void PushStyleCompact();
 	extern void PopStyleCompact();
+	class Character;
+	class Effect;
+	enum class EffectType {
+		HEAL, SHIELD, BONUS_HP,									//healing things
+		AGGRO,													//tank things
+		CRIT, DHIT,												//dps things
+		BUFF, DEBUFF, COND_STATUS, MOD_BUFF,					//status effect
+		MOVE_SELF, MOVE_OTHER, MOVE_TOWARDS,					//movement things
+		//MOD_GAUGE,											//gauge
+		DMG_UP, DMG_DOWN, VULN_UP, VULN_DOWN,					//passive effect
+		OUT_DMG, COOL_DOWN, HASTE								//misc
+	};
 
-	struct Skill {
+	enum class TargetType { SELF, FRIEND, FOE, SPECIAL };
+
+	class StatusEffect {
+	public:
+		int id = -1;
+		std::string name = "";
+		bool isBuff = true;
+		bool isFriendly = true;
+		bool overTime = true;
+		bool hasStacks = false;
+		bool isGaugeBuff = false;
+		int maxStacks = -1;
+		int duration = -1;
+		Effect* effect;
+	};
+
+	class Effect {
+	public:
+		EffectType type = EffectType::OUT_DMG;					//default is do damage
+		std::vector<int> args = {};
+		int radius = 0;
+		TargetType targetType = TargetType::SELF;
+	};
+
+	class Skill
+	{
+	public:
+		int id = -1;
+		std::string name = "";
 		bool gcd = true;
 		bool cast = false;
 		int cd = 2500;
 		int lock = 100;
 		int recast = 2500;
+		int range = 0;
+		int maxStacks = 1;
+		std::vector<Effect> effects;
+		std::vector<int> comboIds;
 	};
+
 
 	extern std::vector<Skill> skillList;
 	struct SkillTick {
