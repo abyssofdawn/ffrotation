@@ -334,6 +334,10 @@ namespace FFRot {
 		ping = 80; 
 		cjob = Job::PLD;
 	}
+	Character& Character::instance()
+	{
+		return *this;
+	}
 }
 
 

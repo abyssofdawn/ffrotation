@@ -5,5 +5,6 @@
 namespace FFRot {
 	extern void ShowSKSWindow();
 	extern void ShowTimelineWindow();
+	extern void ShowSkillsWindow();
 }
 #endif

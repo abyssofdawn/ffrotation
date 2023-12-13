@@ -1,13 +1,58 @@
+#pragma once
 #include <math.h>
 #include "imgui.h"
 #include <vector>
 #include "helper.h"
 
 namespace FFRot {
+
+	Skill::Skill() {
+		id = -1;
+		name = "";
+		type = SkillType::GCD;
+		gcd = true;
+		cast = false;
+		cd = 2500;
+		lock = 100;
+		recast = 2500;
+		range = 0;
+		maxStacks = 1;
+		effects = {};
+		comboIds = {};
+		breaksCombo = false;
+		targetType = TargetType::SELF;				//who the effect targets (for location)
+	}
+
+
+	Effect::Effect() {
+
+		id = -1;
+		arg = {};								//contains things like potency and buff id
+		radius = 0;											//radius of effect centered on the target
+		type = EffectType::OUT_DMG;					//default is do damage
+		affectsType = TargetType::SELF;				//who the effect applies to
+
+	};
+
+	StatusEffect::StatusEffect() {
+		id = -1;											//used in effect args
+		name = "";
+		isBuff = true;
+		isFriendly = true;
+		overTime = true;
+		hasStacks = false;
+		isGaugeBuff = false;
+		maxStacks = -1;
+		duration = -1;
+		effect = -1;
+		canCleanse = false;
+		procs = {};		
+	};
 	std::vector<Character> chara = {};
 	std::vector<TimelineStats> t_stats = {};
 	std::vector<std::vector<int>> ticks = {};
 	std::vector<Skill> skillList = {};
+
 
 	float newCd(float cd, int sks) {
 		return floor(cd * 1000 * (1000 + ceil(130.0f * (400 - sks) / 1900)) / 10000) / 100;
@@ -33,21 +78,8 @@ namespace FFRot {
 		ImGui::PopStyleVar(2);
 	}
 
-	void to_json(json& j, const Skill& skill)
-	{
-		j = json{ {"gcd", skill.gcd}, {"cast", skill.cast}, {"cd", skill.cd}, {"lock", skill.lock}, {"recast", skill.recast}};
-	}
-
-	void from_json(const json& j, Skill& skill)
-	{
-		j.at("gcd").get_to(skill.gcd);
-		j.at("cast").get_to(skill.cast);
-		j.at("cd").get_to(skill.cd);
-		j.at("lock").get_to(skill.lock);
-		j.at("recast").get_to(skill.recast);
-	}
-
 	int selectedChar = 0;
+
 
 
 

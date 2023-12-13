@@ -13,6 +13,7 @@
 #include <iostream>
 #include "view/views.h"
 #include "lib/ImGuiFileDialog.h"
+#include "util/classes.h"
 
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
@@ -96,11 +97,14 @@ int main(int, char**)
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
+
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     FFRot::t_stats.push_back({10, 100000});
     FFRot::t_stats.push_back({ 10, 100000 });
+
+
+
+    json j_out = json{ FFRot::getUniqueJobClasses() };
 
     std::vector<int> init = { };
     /*ticks.push_back(init);
@@ -121,9 +125,9 @@ int main(int, char**)
     FFRot::skillList.push_back({ true, false, 2500, 100 });
     FFRot::skillList.push_back({ true, false, 20000, 100 });
     FFRot::skillList.push_back({ true, false, 30000, 100 });*/
+    
 
-
-
+    //json j = json{ sk, ef, st };
 
 
     bool done = false;
@@ -234,10 +238,10 @@ int main(int, char**)
 
         if (ImGuiFileDialog::Instance()->Display("SaveDialog",ImGuiWindowFlags_NoCollapse, ImVec2(400,200))) {
             if (ImGuiFileDialog::Instance()->IsOk()) {
-                json j_out = FFRot::skillList;
+
                 std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::ofstream o(filePathName);
-                o << std::setw(4) << j_out << std::endl;
+                o << /*std::setw(4) <<*/ j_out << std::endl;
             }
 
             ImGuiFileDialog::Instance()->Close();
@@ -256,11 +260,15 @@ int main(int, char**)
                 i >> j_in;
                 i.close();
 
-                FFRot::skillList = j_in;
-                if (!FFRot::chara.empty()) {
-                    FFRot::chara.at(FFRot::selectedChar).clearSkills();
-                    FFRot::chara.at(FFRot::selectedChar).makeSkills();
+                for (auto i : j_in.items()) {
+
                 }
+
+                //FFRot::skillList = j_in;
+                //if (!FFRot::chara.empty()) {
+                //    FFRot::chara.at(FFRot::selectedChar).clearSkills();
+                //    FFRot::chara.at(FFRot::selectedChar).makeSkills();
+                //}
             }
 
             ImGuiFileDialog::Instance()->Close();
