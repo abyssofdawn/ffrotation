@@ -9,6 +9,7 @@ using json = nlohmann::json;
 namespace FFRot {
 	enum struct SkillType { GCD, OGCD, CAST_GCD, CAST_OGCD};
 	enum struct Job { PLD = 0, WAR = 2, DRK = 3, GNB = 4, WHM = 5, SCH = 6, AST = 7, SGE = 8, MNK = 9, DRG = 10, NIN = 11, SAM = 12, RPR = 13, BRD = 14, MCH = 15, DNC = 16, BLM = 17, SMN =  18, RDM = 19, NONE = 20};
+	std::string Job_[];
 	extern float newCd(float cd, int sks); 
 	extern int newCdms(float cd, int sks);
 	extern int newCdms(int cd, int sks);

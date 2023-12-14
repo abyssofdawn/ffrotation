@@ -6,9 +6,10 @@
 
 namespace FFRot {
 
+
 	Skill::Skill() {
 		id = -1;
-		name = "";
+		name = "test name";
 		type = SkillType::GCD;
 		gcd = true;
 		cast = false;
@@ -52,7 +53,7 @@ namespace FFRot {
 	std::vector<TimelineStats> t_stats = {};
 	std::vector<std::vector<int>> ticks = {};
 	std::vector<Skill> skillList = {};
-
+	std::string Job_[] = { "PLD" , "WAR", "DRK", "GNB", "WHM", "SCH", "AST", "SGE", "MNK" , "DRG" , "NIN" , "SAM" , "RPR" , "BRD" , "MCH" , "DNC" , "BLM" , "SMN" , "RDM" , "NONE" };
 
 	float newCd(float cd, int sks) {
 		return floor(cd * 1000 * (1000 + ceil(130.0f * (400 - sks) / 1900)) / 10000) / 100;

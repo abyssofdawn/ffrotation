@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include <tchar.h>
 #include "util/json.hpp"
+#include "util/classes.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -13,9 +14,8 @@
 #include <iostream>
 #include "view/views.h"
 #include "lib/ImGuiFileDialog.h"
-#include "util/classes.h"
 
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE /ENTRY:mainCRTStartup")
 
 #define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
 
@@ -173,6 +173,7 @@ int main(int, char**)
         {
             FFRot::ShowSKSWindow();
             FFRot::ShowTimelineWindow();
+            FFRot::ShowSkillsWindow();
 
             if (ImGui::BeginMainMenuBar()) {
                 if (ImGui::BeginMenu("File")) {
@@ -238,10 +239,10 @@ int main(int, char**)
 
         if (ImGuiFileDialog::Instance()->Display("SaveDialog",ImGuiWindowFlags_NoCollapse, ImVec2(400,200))) {
             if (ImGuiFileDialog::Instance()->IsOk()) {
-
+                j_out = json{ FFRot::jobClass };
                 std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::ofstream o(filePathName);
-                o << /*std::setw(4) <<*/ j_out << std::endl;
+                o << std::setw(4) << j_out << std::endl;
             }
 
             ImGuiFileDialog::Instance()->Close();
@@ -260,9 +261,10 @@ int main(int, char**)
                 i >> j_in;
                 i.close();
 
-                for (auto i : j_in.items()) {
+                std::cout << j_in << std::endl;
 
-                }
+
+                FFRot::jobClass = j_in;
 
                 //FFRot::skillList = j_in;
                 //if (!FFRot::chara.empty()) {
