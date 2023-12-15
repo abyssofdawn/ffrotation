@@ -1,14 +1,48 @@
 #pragma once
 #include <vector>
 #include "json.hpp"
+#include <imgui_internal.h>
+
+
 
 using json = nlohmann::json;
 #ifndef HELPER
 #define HELPER
 
 namespace FFRot {
-	enum struct SkillType { GCD, OGCD, CAST_GCD, CAST_OGCD};
-	enum struct Job { PLD = 0, WAR = 2, DRK = 3, GNB = 4, WHM = 5, SCH = 6, AST = 7, SGE = 8, MNK = 9, DRG = 10, NIN = 11, SAM = 12, RPR = 13, BRD = 14, MCH = 15, DNC = 16, BLM = 17, SMN =  18, RDM = 19, NONE = 20};
+	enum SkillType { GCD, OGCD, CAST_GCD, CAST_OGCD};
+	enum Job { PLD, WAR, DRK, GNB, WHM, SCH, AST, SGE, MNK, DRG, NIN, SAM, RPR, BRD, MCH, DNC, BLM, SMN, RDM, NONE};
+	Job JobA[];
+
+	NLOHMANN_JSON_SERIALIZE_ENUM(SkillType, {
+		{GCD, "GCD"},
+		{OGCD, "OGCD"},
+		{CAST_GCD, "CAST_GCD"},
+		{CAST_OGCD, "CAST_OGCD"}
+	})
+
+	NLOHMANN_JSON_SERIALIZE_ENUM(Job, {
+		{Job::PLD, "PLD"},
+		{Job::WAR, "WAR"},
+		{Job::DRK, "DRK"},
+		{Job::GNB, "GNB"},
+		{Job::WHM, "WHM"},
+		{Job::SCH, "SCH"},
+		{Job::AST, "AST"},
+		{Job::SGE, "SGE"},
+		{Job::MNK, "MNK"},
+		{Job::DRG, "DRG"},
+		{Job::NIN, "NIN"},
+		{Job::SAM, "SAM"},
+		{Job::RPR, "RPR"},
+		{Job::BRD, "BRD"},
+		{Job::MCH, "MCH"},
+		{Job::DNC, "DNC"},
+		{Job::BLM, "BLM"},
+		{Job::SMN, "SMN"}, 
+		{Job::RDM, "RDM"},
+		{Job::NONE, "NONE"}
+	})
 	std::string Job_[];
 	extern float newCd(float cd, int sks); 
 	extern int newCdms(float cd, int sks);
@@ -48,7 +82,43 @@ namespace FFRot {
 		NONE
 	};
 
+	NLOHMANN_JSON_SERIALIZE_ENUM(EffectType, {
+		{ EffectType::HEAL, "HEAL" },
+		{ EffectType::SET_HP, "SET_HP" },
+		{ EffectType::SHIELD, "SHIELD" },
+		{ EffectType::BONUS_HP, "BONUS_HP" },
+		{ EffectType::AGGRO, "AGGRO" },
+		{ EffectType::MANA, "MANA" },
+		{ EffectType::CRIT, "CRIT" },
+		{ EffectType::DHIT, "DHIT" },
+		{ EffectType::STATUS, "STATUS" },
+		{ EffectType::COND_STATUS, "COND_STATUS" },
+		{ EffectType::MOD_STATUS, "MOD_STATUS" },
+		{ EffectType::STATUS_WITH_ARGS, "STATUS_WITH_ARGS" },
+		{ EffectType::MOVE_SELF, "MOVE_SELF" },
+		{ EffectType::MOVE_OTHER, "MOVE_OTHER" },
+		{ EffectType::MOVE_TOWARDS, "MOVE_TOWARDS" },
+		{ EffectType::DMG_UP, "DMG_UP" },
+		{ EffectType::DMG_DOWN, "DMG_DOWN" },
+		{ EffectType::VULN_UP, "VULN_UP" },
+		{ EffectType::VULN_DOWN, "VULN_DOWN" },
+		{ EffectType::PARRY_UP, "PARRY_UP" },
+		{ EffectType::OUT_DMG, "OUT_DMG" },
+		{ EffectType::COOL_DOWN, "COOL_DOWN" },
+		{ EffectType::HASTE, "HASTE" },
+		{ EffectType::COMBO, "COMBO" },
+		{ EffectType::SPECIAL, "SPECIAL" },
+		{ EffectType::NONE, "NONE" }
+	})
+
 	enum class TargetType { SELF, FRIEND, FOE, SPECIAL };
+
+	NLOHMANN_JSON_SERIALIZE_ENUM(TargetType, {
+		{ TargetType::SELF, "SELF" },
+		{ TargetType::FRIEND, "FRIEND" },
+		{ TargetType::FOE, "FOE" },
+		{ TargetType::SPECIAL, "SPECIAL" }
+	})									 
 
 	class StatusEffect {
 	public:
@@ -88,7 +158,7 @@ namespace FFRot {
 		int id;
 		std::string name;
 		SkillType type;
-		bool gcd;
+		int gcd;
 		bool cast;
 		int cd;
 		int lock;
@@ -164,5 +234,14 @@ namespace FFRot {
 	extern std::vector<TimelineStats> t_stats;
 	extern int selectedChar;
 
+}
+
+namespace ImGui
+{
+	// ImGui::InputText() with std::string
+	// Because text input needs dynamic resizing, we need to setup a callback to grow the capacity
+	IMGUI_API bool  InputText(const char* label, std::string* str, ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = nullptr, void* user_data = nullptr);
+	IMGUI_API bool  InputTextMultiline(const char* label, std::string* str, const ImVec2& size = ImVec2(0, 0), ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = nullptr, void* user_data = nullptr);
+	IMGUI_API bool  InputTextWithHint(const char* label, const char* hint, std::string* str, ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = nullptr, void* user_data = nullptr);
 }
 #endif

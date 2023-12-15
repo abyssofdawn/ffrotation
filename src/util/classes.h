@@ -23,27 +23,32 @@ namespace FFRot {
 
 		Job job;
 
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(JobClass, skillList, effects, statusEffects, job);
+
+		Skill getSkillForId(int id);
+
 	};
 	extern std::vector<JobClass> jobClass;
 	extern std::vector<JobClass> getUniqueJobClasses();
 
 
-	inline void to_json(json& j, const JobClass& p) {
-		j = json{ p.skillList, p.effects, p.statusEffects, p.job };
-	}
-
-	inline void from_json(const json& j, JobClass& p) {
-		try {
-			j[0].at("skillList").get_to(p.skillList);
-			j[0].at("effects").get_to(p.effects);
-			j[0].at("statusEffects").get_to(p.statusEffects);
-			p.job = Job(j[0]["job"]);
-		}
-		catch (const json::type_error& e)	{
-			std::cout << e.what() << std::endl;
-		}
-
-	}
+	//inline void to_json(json& j, const JobClass& p) {
+	//	j = json{ p.skillList, p.effects, p.statusEffects, p.job };
+	//}
+	
+	//inline void from_json(const json& j, JobClass& p) {
+	//	try {
+	//		for (auto i = j.at("skillList").begin(); i != j.at("skillList").end(); i++)
+	//			p.skillList.push_back(i.value());
+	//		j.at("effects").get_to(p.effects);
+	//		j.at("statusEffects").get_to(p.statusEffects);
+	//		j.at("job").get_to(p.job);
+	//	}
+	//	catch (const json::type_error& e)	{
+	//		std::cout << e.what() << std::endl;
+	//	}
+	//
+	//}
 
 }
 

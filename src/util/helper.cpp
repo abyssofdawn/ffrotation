@@ -8,7 +8,7 @@ namespace FFRot {
 
 
 	Skill::Skill() {
-		id = -1;
+		id = 0;
 		name = "test name";
 		type = SkillType::GCD;
 		gcd = true;
@@ -53,6 +53,7 @@ namespace FFRot {
 	std::vector<TimelineStats> t_stats = {};
 	std::vector<std::vector<int>> ticks = {};
 	std::vector<Skill> skillList = {};
+	Job JobA[] = {PLD, WAR, DRK, GNB, WHM, SCH, AST, SGE, MNK, DRG, NIN, SAM, RPR, BRD, MCH, DNC, BLM, SMN, RDM, NONE};
 	std::string Job_[] = { "PLD" , "WAR", "DRK", "GNB", "WHM", "SCH", "AST", "SGE", "MNK" , "DRG" , "NIN" , "SAM" , "RPR" , "BRD" , "MCH" , "DNC" , "BLM" , "SMN" , "RDM" , "NONE" };
 
 	float newCd(float cd, int sks) {

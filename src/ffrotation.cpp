@@ -104,7 +104,7 @@ int main(int, char**)
 
 
 
-    json j_out = json{ FFRot::getUniqueJobClasses() };
+    //json j_out = json{ FFRot::getUniqueJobClasses() };
 
     std::vector<int> init = { };
     /*ticks.push_back(init);
@@ -239,10 +239,11 @@ int main(int, char**)
 
         if (ImGuiFileDialog::Instance()->Display("SaveDialog",ImGuiWindowFlags_NoCollapse, ImVec2(400,200))) {
             if (ImGuiFileDialog::Instance()->IsOk()) {
-                j_out = json{ FFRot::jobClass };
+                json j_out = FFRot::jobClass;
                 std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::ofstream o(filePathName);
                 o << std::setw(4) << j_out << std::endl;
+                std::cout << std::setw(4) << j_out << std::endl;
             }
 
             ImGuiFileDialog::Instance()->Close();
@@ -261,10 +262,25 @@ int main(int, char**)
                 i >> j_in;
                 i.close();
 
-                std::cout << j_in << std::endl;
+                std::cout << std::setw(4) << j_in << std::endl;
 
+                //for (auto it = j_in.begin(); it != j_in.end(); it++) {
+                //    std::cout << std::setw(4) << it.value() << std::endl;
+                //    try {
+                //        FFRot::jobClass = it.value();
+                //    }
+                //    catch (const json::type_error& e) {
+                //        std::cout << e.what() << std::endl;
+                //    }
+                //}
 
+                //FFRot::JobClass j = j_in.template get<FFRot::JobClass>();
+                //
+                //
                 FFRot::jobClass = j_in;
+                std::cout << std::setw(4) << json{ FFRot::jobClass } << std::endl << std::endl;
+
+                std::cout << std::setw(4) << json{ FFRot::jobClass.at(0).skillList } << std::endl << std::endl;
 
                 //FFRot::skillList = j_in;
                 //if (!FFRot::chara.empty()) {

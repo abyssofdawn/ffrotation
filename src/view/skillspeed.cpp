@@ -95,9 +95,10 @@ namespace FFRot {
                         ImGui::Text("%.2f", skill.skill->gcd ? newCd(cd, (skill.skill->cast ? chara.at(row).sps : chara.at(row).sks)) : cd);
                         ImGui::PopItemWidth();
 
-                        ImGui::TableNextColumn(); //is a gcd
+                        ImGui::TableNextColumn(); //gcd cooldown
                         id = fmt::format("##chara table gcd{} {}", row, _skill);
-                        ImGui::Checkbox(id.c_str(), &(skill.skill->gcd));
+                        skill.skill->gcd = clampInt(skill.skill->gcd, 10, 5000);
+                        ImGui::InputInt(id.c_str(), &(skill.skill->gcd));
                             
                         ImGui::TableNextColumn(); //is cast
                         id = fmt::format("##chara table cast{} {}", row, _skill);

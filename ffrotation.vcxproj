@@ -137,8 +137,10 @@
     <ClCompile Include="src\util\character.cpp" />
     <ClCompile Include="src\util\helper.cpp" />
     <ClCompile Include="src\util\classes.cpp" />
+    <ClCompile Include="src\view\skillbuilder.cpp" />
     <ClCompile Include="src\view\skills.cpp" />
     <ClCompile Include="src\view\skillspeed.cpp" />
+    <ClCompile Include="src\view\skilltable.cpp" />
     <ClCompile Include="src\view\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
